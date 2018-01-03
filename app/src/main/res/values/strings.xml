@@ -9,4 +9,9 @@
     <string name="pleaseAddPlayers">Bitte füge Spieler hinzu.</string>
     <string name="noValidName">Verwende keine Prozentsymbole und bleibe bitte unter 25 Zeichen.</string>
     <string name="notEnoughPlayerWarning">Du brauchst mindestens 2 Spieler um ein Spiel starten zu können.</string>
+
+    <string name="warningDialogMessage">"Genießen Sie Alkohol verantwortungsvoll. Diese App haftet nicht für Folgeschäden durch Betrinken."</string>
+    <string name="warningDialogTitle">Warnhinweis</string>
+    <string name="warningDialogPositiveButton">Spielen</string>
+    <string name="warningDialogNegativeButton">Schließen</string>
 </resources>
