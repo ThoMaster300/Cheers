@@ -3,4 +3,7 @@
     <string name="play_button">Spielen</string>
     <string name="settings_button">Einstellungen</string>
     <string name="more_button">Mehr</string>
+    <string name="playerChooseHeadline">Spielerauswahl</string>
+    <string name="settingsHeadline">Einstellungen</string>
+    <string name="add_button">Hinzufügen</string>
 </resources>

@@ -1,5 +1,6 @@
 package at.technikum_wien.cheers;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -37,6 +38,10 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.question_layout);
         layout.setOnClickListener(this);
+
+        Intent intent = getIntent();
+        String playersString = intent.getStringExtra(PlayerActivity.PLAYERS_TAG);
+        playersPool = playersString.split(":");
     }
 
     //Get Questions and fill questionPool
