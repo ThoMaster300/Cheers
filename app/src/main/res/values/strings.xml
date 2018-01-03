@@ -6,4 +6,6 @@
     <string name="playerChooseHeadline">Spielerauswahl</string>
     <string name="settingsHeadline">Einstellungen</string>
     <string name="add_button">Hinzufügen</string>
+    <string name="noValidName">Verwende keine Prozentsymbole und bleibe bitte unter 25 Zeichen.</string>
+    <string name="notEnoughPlayerWarning">Du brauchst mindestens 2 Spieler um ein Spiel starten zu können.</string>
 </resources>

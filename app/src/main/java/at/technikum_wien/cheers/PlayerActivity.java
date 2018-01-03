@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -52,13 +53,24 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
         switch (view.getId()){
             case R.id.play_play_button:
-                intent = new Intent(this, QuestionActivity.class);
-                intent.putExtra(PlayerActivity.PLAYERS_TAG, transformPlayersArray());
-                startActivity(intent);
+                if (playersPool.size()>= 2) {
+                    intent = new Intent(this, QuestionActivity.class);
+                    intent.putExtra(PlayerActivity.PLAYERS_TAG, transformPlayersArray());
+                    startActivity(intent);
+                }else{
+                    Toast toast = Toast.makeText(this, getString(R.string.notEnoughPlayerWarning), Toast.LENGTH_LONG);
+                    toast.show();
+                }
                 break;
             case R.id.play_add_button:
-                playersPool.add(enteredName.getText().toString());
-                playerAdapter.notifyDataSetChanged();
+                if (enteredName.getText().toString().contains("%") || enteredName.getText().length() >= 25) {
+                    Toast toast = Toast.makeText(this, getString(R.string.noValidName), Toast.LENGTH_LONG);
+                    toast.show();
+                }else{
+                    playersPool.add(enteredName.getText().toString());
+                    playerAdapter.notifyDataSetChanged();
+                }
+
                 enteredName.getText().clear();
                 break;
             default:
