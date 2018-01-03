@@ -9,14 +9,14 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Random;
+
 public class QuestionActivity extends AppCompatActivity implements View.OnClickListener{
 
-    int rounds;
-    int currentRound;
-    TextView tvRounds;
-    TextView tvQuestions;
-    String[] questionsPool;
-    String[] playersPool;
+    int rounds, currentRound;
+    TextView tvRounds, tvQuestions;
+    String[] questionsPool, playersPool;
+    private Random randomGenerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +42,19 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = getIntent();
         String playersString = intent.getStringExtra(PlayerActivity.PLAYERS_TAG);
         playersPool = playersString.split(":");
+
+        randomGenerator = new Random();
     }
 
-    //Get Questions and fill questionPool
+    //Get Questions (from firebase) and fill questionPool
     private String[] getQuestions(){
         String[] tempArray = new String[rounds];
         for (int i = 0; i < tempArray.length; i++){
-            tempArray[i] = "Das ist die Frage " + i;
+            if (i%2 == 0) {
+                tempArray[i] = "" + i + ": Hier steht eine zukünftige Frage";
+            }else{
+                tempArray[i] = "" + i + ": %p muss 3 Schlucke von seinem Getränk nehmen. Nur zu Testzwecken: %2p";
+            }
         }
         return  tempArray;
     }
@@ -67,7 +73,32 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     //Set Question
     private void setQuestionTv(int arrayInd) {
         String tempText = questionsPool[arrayInd];
-        tvQuestions.setText(tempText);
+        tvQuestions.setText(transformQuestion(tempText));
+    }
+
+    //Transform text if there is replaceToken in it
+    private String transformQuestion(String text){
+        if (text.contains("%p") || text.contains("%2p")){
+            String firstName = getRandomPlayer();
+            String secondName = getRandomPlayer(firstName);
+
+            return text.replace("%p", firstName).replace("%2p", secondName);
+        }else{
+            return text;
+        }
+    }
+
+    //Chooses a random player from the playerPool
+    private String getRandomPlayer(){
+        return playersPool[randomGenerator.nextInt(playersPool.length)];
+    }
+    private String getRandomPlayer(String expect){
+        String temp = playersPool[randomGenerator.nextInt(playersPool.length)];
+        if (temp.equals(expect)){
+            return getRandomPlayer(expect);
+        }else {
+            return temp;
+        }
     }
 
     //Set round tv
