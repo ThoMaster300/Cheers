@@ -28,9 +28,13 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_question);
 
         //Set everything
+        Intent intent = getIntent();
+        String playersString = intent.getStringExtra(PlayerActivity.PLAYERS_TAG);
+        playersPool = playersString.split(":");
+
         tvRounds = (TextView)findViewById(R.id.roundsToPlay_tv);
         tvQuestions = (TextView)findViewById(R.id.currentQuestion_tv);
-        rounds = 40;
+        rounds = 15 + playersPool.length*5;
         currentRound = 1;
         setRoundsTv();
         questionsPool = getQuestions();
@@ -39,16 +43,13 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         LinearLayout layout = (LinearLayout) findViewById(R.id.question_layout);
         layout.setOnClickListener(this);
 
-        Intent intent = getIntent();
-        String playersString = intent.getStringExtra(PlayerActivity.PLAYERS_TAG);
-        playersPool = playersString.split(":");
-
         randomGenerator = new Random();
     }
 
     //Get Questions (from firebase) and fill questionPool
     private String[] getQuestions(){
         String[] tempArray = new String[rounds];
+        //Dummyfragen -> hier müssen wir die Questions aus der Localen abgespeicherten Firebasedb holen.
         for (int i = 0; i < tempArray.length; i++){
             if (i%2 == 0) {
                 tempArray[i] = "" + i + ": Hier steht eine zukünftige Frage";
@@ -66,11 +67,11 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
             setQuestionTv(currentRound - 1);
             setRoundsTv();
         }else{
-            //ENDE
+            //Hier fehlt noch ein Intent zu dem EndScreen
         }
     }
 
-    //Set Question
+    //Set Questiontv
     private void setQuestionTv(int arrayInd) {
         String tempText = questionsPool[arrayInd];
         tvQuestions.setText(transformQuestion(tempText));
@@ -88,7 +89,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    //Chooses a random player from the playerPool
+    //Chooses a random player from the playerPool (oder wenn man einen Namen braucht der noch nicht verwendet wird
     private String getRandomPlayer(){
         return playersPool[randomGenerator.nextInt(playersPool.length)];
     }
@@ -101,7 +102,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    //Set round tv
+    //Set roundtv
     private void setRoundsTv() {
         tvRounds.setText("" + currentRound + "/" + rounds);
     }

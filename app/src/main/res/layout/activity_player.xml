@@ -12,20 +12,36 @@
         android:layout_height="wrap_content"
         android:text="@string/playerChooseHeadline"
         android:textSize="48dp"
+        android:layout_margin="10dp"
         android:textAlignment="center"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        android:scrollbars="vertical"
+        android:background="#E9E9E9"
         android:id="@+id/players_rv">
     </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:visibility="visible"
+        android:id="@+id/showInfo_tv"
+        android:layout_margin="10dp"
+        android:text="@string/pleaseAddPlayers"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
         <EditText
-            android:layout_width="300dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/enterName_et"
         />
@@ -33,6 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/play_add_button"
+            android:paddingRight="8dp"
             android:text="@string/add_button"/>
     </LinearLayout>
     <Button

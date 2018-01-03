@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:text="@string/settingsHeadline"
         android:textSize="48dp"
+        android:layout_margin="10dp"
         android:textAlignment="center"/>
 
 </android.support.constraint.ConstraintLayout>

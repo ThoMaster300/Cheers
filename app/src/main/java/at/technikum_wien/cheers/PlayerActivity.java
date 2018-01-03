@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private RecyclerView recyclerView;
     private PlayerAdapter playerAdapter;
     private EditText enteredName;
+    private TextView showInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         enteredName = (EditText)findViewById(R.id.enterName_et);
         buttonAdd = (Button)findViewById(R.id.play_add_button);
         buttonAdd.setOnClickListener(this);
+        showInfo = (TextView)findViewById(R.id.showInfo_tv);
 
         //RecyclerView
         recyclerView = (RecyclerView)findViewById(R.id.players_rv);
@@ -63,10 +66,12 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.play_add_button:
-                if (enteredName.getText().toString().contains("%") || enteredName.getText().length() >= 25) {
+                if (enteredName.getText().toString().contains("%") || enteredName.getText().toString().length() >= 25) {
                     Toast toast = Toast.makeText(this, getString(R.string.noValidName), Toast.LENGTH_LONG);
                     toast.show();
                 }else{
+                    showInfo.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
                     playersPool.add(enteredName.getText().toString());
                     playerAdapter.notifyDataSetChanged();
                 }

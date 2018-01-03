@@ -15,9 +15,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button buttonPlay;
-    private Button buttonSettings;
-    private Button buttonMore;
+    private Button buttonPlay, buttonSettings, buttonMore;
     private TextView tvLastUpdate;
 
     @Override
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonSettings.setOnClickListener(this);
         buttonMore.setOnClickListener(this);
 
-        //GetSetTV
+        //GetSetTV (hier würde ich immer einfach einen "Timestamp" reinhauen, wann die neueste DB gedownloaded wurde)
         tvLastUpdate = (TextView)findViewById(R.id.lastUpdate_tv);
         tvLastUpdate.setText("Noch nie");
     }
