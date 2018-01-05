@@ -29,7 +29,11 @@
         <activity
             android:name=".QuestionActivity"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="landscape" ></activity>
+            android:screenOrientation="landscape" />
+        <activity android:name=".EndScreenActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
     </application>
 
 </manifest>
