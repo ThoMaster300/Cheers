@@ -25,12 +25,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonPlay, buttonSettings, buttonMore;
     private TextView tvLastUpdate;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
+        ######################################################################
+        ###Hier wird der Warndialog gezeigt
+        ###Wenn man Schliessen oder daneben drückt, wird die Activity gekillt,
+        ###Klickt man auf Spielen, wird ganz normal fortgefahren im Code
+        #####################################################################*/
 
-        WarningDialogFragment warningDialog= new WarningDialogFragment();
-        warningDialog.show(getFragmentManager(), "warning");
+        // WarningDialogFragment warningDialog= new WarningDialogFragment();
+       // warningDialog.show(getFragmentManager(), "warning");
 
 
 

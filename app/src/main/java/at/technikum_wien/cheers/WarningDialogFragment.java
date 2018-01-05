@@ -24,7 +24,7 @@ public class WarningDialogFragment extends DialogFragment{
                 .setTitle(R.string.warningDialogTitle)
                 .setPositiveButton(R.string.warningDialogPositiveButton, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // ToDo: Wenn man OK klickt, muss man überhaupt eine Aktion starten
+                        // Wenn man OK klickt, muss man keine Aktion starten
                     }
                 })
                 .setNegativeButton(R.string.warningDialogNegativeButton, new DialogInterface.OnClickListener() {
