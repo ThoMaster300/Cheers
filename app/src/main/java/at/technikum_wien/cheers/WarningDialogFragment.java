@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.SystemClock;
 
 /**
  * Created by Alexander on 03.01.2018.
@@ -31,6 +32,7 @@ public class WarningDialogFragment extends DialogFragment{
                     public void onClick(DialogInterface dialog, int id) {
                         // Die app schließt sich
                         getActivity().finish();
+
                     }
                 });
         // Create the AlertDialog object and return it

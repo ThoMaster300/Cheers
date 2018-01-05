@@ -67,7 +67,8 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
             setQuestionTv(currentRound - 1);
             setRoundsTv();
         }else{
-            //Hier fehlt noch ein Intent zu dem EndScreen
+            Intent intent = new Intent(this, EndScreenActivity.class);
+            startActivity(intent);
         }
     }
 
