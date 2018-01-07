@@ -71,10 +71,15 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                     Toast toast = Toast.makeText(this, getString(R.string.noValidName), Toast.LENGTH_LONG);
                     toast.show();
                 }else{
-                    showInfo.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                    playersPool.add(enteredName.getText().toString());
-                    playerAdapter.notifyDataSetChanged();
+                    if (enteredName.getText().toString().length() > 0) {
+                        showInfo.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        playersPool.add(enteredName.getText().toString());
+                        playerAdapter.notifyDataSetChanged();
+                    }else{
+                        Toast toast = Toast.makeText(this, getString(R.string.tooShortName), Toast.LENGTH_LONG);
+                        toast.show();
+                    }
                 }
 
                 enteredName.getText().clear();
