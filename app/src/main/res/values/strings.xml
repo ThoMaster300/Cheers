@@ -19,4 +19,9 @@
     <string name="endScreenMessage">Bravo! Ihr habt Cheers erfolgreich beendet. Wenn Ihr noch immer nicht genug vom Alkohol habt, dann drückt Restart!</string>
     <string name="endScreenButtonHome">HOME</string>
     <string name="endScreenButtonRestart">RESTART</string>
+
+
+
+    <string name="settings_title_textsize_question">Aufgaben-Textgröße</string>
+    <string name="settings_summary_textsize_question">Klicke, um die Textgröße für die Aufgaben zu verändern</string>
 </resources>

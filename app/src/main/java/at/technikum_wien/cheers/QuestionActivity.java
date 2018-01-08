@@ -1,13 +1,16 @@
 package at.technikum_wien.cheers;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -45,6 +48,18 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         layout.setOnClickListener(this);
 
         randomGenerator = new Random();
+
+
+        //Shared Preferences
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String questionSize = sharedPreferences.getString("text_size_question","32");
+
+        try {
+            tvQuestions.setTextSize(Integer.valueOf(questionSize));
+        }catch(Exception ex){
+            //wenn keine Zahlen sondern zB Buchstaben eingegeben werden, wird default wert genommen
+        }
+
     }
 
     //Get Questions (from firebase) and fill questionPool
