@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <EditTextPreference
+            android:defaultValue="32"
+            android:key="text_size_question"
+            android:summary="@string/settings_summary_textsize_question"
+            android:title="@string/settings_title_textsize_question" />
+
+</PreferenceScreen>

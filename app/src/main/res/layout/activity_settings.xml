@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
     android:layout_height="match_parent"
-    tools:context="at.technikum_wien.cheers.SettingsActivity">
+     android:layout_width="match_parent"
+    android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/settingsHeadline"
         android:textSize="48dp"
@@ -15,4 +14,11 @@
         android:layout_marginBottom="32dp"
         android:textAlignment="center"/>
 
+    <fragment
+        android:name="at.technikum_wien.cheers.SettingsFragment"
+        android:id="@+id/activity_settings"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"/>
+    
 </LinearLayout>
