@@ -6,14 +6,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/question_layout"
-    tools:context="at.technikum_wien.cheers.QuestionActivity">
+    tools:context="at.technikum_wien.cheers.QuestionActivity"
+    android:background="@color/colorBackgroundAll">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:text="PlaceHolder"
-        android:textSize="20dp"
+        android:textSize="28dp"
+        android:textColor="@color/colorText"
         android:id="@+id/roundsToPlay_tv"/>
 
     <TextView
@@ -23,5 +25,6 @@
         android:gravity="center"
         android:id="@+id/currentQuestion_tv"
         android:textSize="32dp"
+        android:textColor="@color/colorText"
         android:text="PlaceHolder"/>
 </LinearLayout>

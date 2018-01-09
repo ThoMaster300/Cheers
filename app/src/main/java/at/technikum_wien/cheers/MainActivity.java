@@ -50,12 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             warningDialog.show(getFragmentManager(), "warning");
         }
         */
-
-/*
-        //Remove title bar
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //Remove notification bar
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         setContentView(R.layout.activity_main);
 
         //GetSetButtons

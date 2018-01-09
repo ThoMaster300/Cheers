@@ -13,9 +13,6 @@ import android.os.SystemClock;
 
 public class WarningDialogFragment extends DialogFragment{
 
-
-
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -38,7 +35,6 @@ public class WarningDialogFragment extends DialogFragment{
         // Create the AlertDialog object and return it
         return builder.create();
     }
-
 
     //Wenn die Partypeople außerhalb des Dialogs drücken, wird die App auch geschlossen
     @Override

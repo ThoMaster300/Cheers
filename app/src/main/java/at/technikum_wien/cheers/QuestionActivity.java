@@ -16,7 +16,7 @@ import java.util.Random;
 
 public class QuestionActivity extends AppCompatActivity implements View.OnClickListener{
 
-    int rounds, currentRound;
+    int rounds, currentRound, minDrink, maxDrink;
     TextView tvRounds, tvQuestions;
     String[] questionsPool, playersPool;
     private Random randomGenerator;
@@ -24,11 +24,6 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      /*
-        //Remove title bar
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //Remove notification bar
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         setContentView(R.layout.activity_question);
 
         //Set everything
@@ -47,19 +42,25 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         LinearLayout layout = (LinearLayout) findViewById(R.id.question_layout);
         layout.setOnClickListener(this);
 
+        //Für die Zufällig Auswahl der Namen sowie Schlucke
         randomGenerator = new Random();
 
-
-        //Shared Preferences
+        //Shared Preferences für die Textgröße und die mindestschluck sowie die maximal schlucke
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String questionSize = sharedPreferences.getString("text_size_question","32");
+        minDrink = Integer.parseInt(sharedPreferences.getString("min_drinkAmount", "1"));
+        maxDrink = Integer.parseInt(sharedPreferences.getString("max_drinkAmount", "4"));
+
+        //Damit keine Fehlermeldung kommt.
+        if (maxDrink < minDrink){
+            maxDrink = minDrink + 1;
+        }
 
         try {
             tvQuestions.setTextSize(Integer.valueOf(questionSize));
         }catch(Exception ex){
             //wenn keine Zahlen sondern zB Buchstaben eingegeben werden, wird default wert genommen
         }
-
     }
 
     //Get Questions (from firebase) and fill questionPool
@@ -70,7 +71,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
             if (i%2 == 0) {
                 tempArray[i] = "" + i + ": Hier steht eine zukünftige Frage";
             }else{
-                tempArray[i] = "" + i + ": %p muss 3 Schlucke von seinem Getränk nehmen. Nur zu Testzwecken: %2p";
+                tempArray[i] = "" + i + ": %p muss %amount Schlucke von seinem Getränk nehmen. Nur zu Testzwecken: %2p";
             }
         }
         return  tempArray;
@@ -96,11 +97,20 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
     //Transform text if there is replaceToken in it
     private String transformQuestion(String text){
-        if (text.contains("%p") || text.contains("%2p")){
+        if (text.contains("%p") || text.contains("%2p") || text.contains("%amount")){
+            //Get names
             String firstName = getRandomPlayer();
             String secondName = getRandomPlayer(firstName);
 
-            return text.replace("%p", firstName).replace("%2p", secondName);
+            //get schlucke
+            int amount = 0;
+            if (minDrink != maxDrink) {
+                amount = minDrink + randomGenerator.nextInt(maxDrink - minDrink);
+            }else{
+                amount = minDrink;
+            }
+
+            return text.replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
         }else{
             return text;
         }

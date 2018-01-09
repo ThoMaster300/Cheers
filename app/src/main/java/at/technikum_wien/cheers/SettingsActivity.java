@@ -11,23 +11,13 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       /* //Remove title bar
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //Remove notification bar
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         setContentView(R.layout.activity_settings);
-
-
 
         /*ActionBar actionBar = this.getSupportActionBar();
         // Set the action bar back button to look like an up button
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }*/
-
-
-
-
     }
 
     /*

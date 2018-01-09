@@ -6,7 +6,26 @@
         <EditTextPreference
             android:defaultValue="32"
             android:key="text_size_question"
+            android:textColor="@color/colorText"
             android:summary="@string/settings_summary_textsize_question"
             android:title="@string/settings_title_textsize_question" />
+
+        <EditTextPreference
+            android:defaultValue="1"
+            android:key="min_drinkAmount"
+            android:textColor="@color/colorText"
+            android:textColorHighlight="@color/colorText"
+            android:textColorHint="@color/colorText"
+            android:summary="@string/settings_summary_min_drinkAmount"
+            android:title="@string/settings_title_min_drinkAmount" />
+
+        <EditTextPreference
+            android:defaultValue="4"
+            android:key="max_drinkAmount"
+            android:textColor="@color/colorText"
+            android:textColorHighlight="@color/colorText"
+            android:textColorHint="@color/colorText"
+            android:summary="@string/settings_summary_max_drinkAmount"
+            android:title="@string/settings_title_max_drinkAmount" />
 
 </PreferenceScreen>

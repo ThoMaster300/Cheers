@@ -20,8 +20,10 @@
     <string name="endScreenButtonHome">HOME</string>
     <string name="endScreenButtonRestart">RESTART</string>
 
-
-
     <string name="settings_title_textsize_question">Aufgaben-Textgröße</string>
     <string name="settings_summary_textsize_question">Klicke, um die Textgröße für die Aufgaben zu verändern</string>
+    <string name="settings_title_min_drinkAmount">Mindestschluck</string>
+    <string name="settings_summary_min_drinkAmount">Klicke, um die Mindestschluckanzahl zu ändern.</string>
+    <string name="settings_title_max_drinkAmount">Maximalschluck</string>
+    <string name="settings_summary_max_drinkAmount">Klicke, um die Maximalschluckanzahl zu ändern.</string>
 </resources>
