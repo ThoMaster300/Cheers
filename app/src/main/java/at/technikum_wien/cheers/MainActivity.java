@@ -18,6 +18,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 //Startbildschirm
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //GetSetTV (hier würde ich immer einfach einen "Timestamp" reinhauen, wann die neueste DB gedownloaded wurde)
         tvLastUpdate = (TextView) findViewById(R.id.lastUpdate_tv);
-        tvLastUpdate.setText("Noch nie");
+        tvLastUpdate.setText("Last update: " + new SimpleDateFormat("dd/MM/yy", Locale.getDefault()).format(new Date()));
     }
 
     @Override

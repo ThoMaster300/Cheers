@@ -1,6 +1,4 @@
 <resources>
-
-
     <!-- wird nicht benötigt-->
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -10,7 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
-
 
     <!-- Style for disabling the actionbar -->
     <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -22,6 +19,5 @@
         <item name="android:windowFullscreen">true</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
-
 
 </resources>

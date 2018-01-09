@@ -33,6 +33,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         //GetSetIDs
         buttonPlay = (Button)findViewById(R.id.play_play_button);
         buttonPlay.setOnClickListener(this);
+        buttonPlay.setEnabled(false);
         enteredName = (EditText)findViewById(R.id.enterName_et);
         buttonAdd = (Button)findViewById(R.id.play_add_button);
         buttonAdd.setOnClickListener(this);
@@ -71,6 +72,10 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                         recyclerView.setVisibility(View.VISIBLE);
                         playersPool.add(enteredName.getText().toString());
                         playerAdapter.notifyDataSetChanged();
+
+                        if (playersPool.size() >= 2){
+                            buttonPlay.setEnabled(true);
+                        }
                     }else{
                         Toast toast = Toast.makeText(this, getString(R.string.tooShortName), Toast.LENGTH_LONG);
                         toast.show();
