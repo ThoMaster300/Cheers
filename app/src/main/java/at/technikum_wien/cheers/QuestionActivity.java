@@ -57,6 +57,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         setRoundsTv();
         questionsPool = getQuestions();
         setQuestionTv(currentRound - 1);
+        setColor(currentRound - 1);
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.question_layout);
         layout.setOnClickListener(this);
