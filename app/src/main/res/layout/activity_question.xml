@@ -26,5 +26,7 @@
         android:id="@+id/currentQuestion_tv"
         android:textSize="32dp"
         android:textColor="@color/colorText"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:text="PlaceHolder"/>
 </LinearLayout>

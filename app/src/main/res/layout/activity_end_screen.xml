@@ -5,12 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    >
+    android:background="@color/colorBackgroundAll">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorText"
         android:gravity="center_horizontal"
         android:text="@string/endScreenTitle"
         android:textSize="50sp"
@@ -20,6 +21,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorText"
         android:text="@string/endScreenMessage"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
@@ -27,16 +29,17 @@
         android:textAlignment="center"/>
 
     <Button
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="64dp"
+        android:backgroundTint="@color/colorText"
         android:text="@string/endScreenButtonRestart"
         android:layout_marginTop="20dp"
         android:onClick="restartGame"
         />
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="64dp"
+        android:backgroundTint="@color/colorText"
         android:text="@string/endScreenButtonHome"
         android:layout_marginTop="20dp"
         android:onClick="homeButton"

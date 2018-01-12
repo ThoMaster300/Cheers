@@ -18,13 +18,32 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
     int rounds, currentRound, minDrink, maxDrink;
     TextView tvRounds, tvQuestions;
-    String[] questionsPool, playersPool;
-    private Random randomGenerator;
+    String[] playersPool;
+    Question[] questionsPool;
+    Random randomGenerator;
+    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
+
+        //Unser Layout finden
+        linearLayout = (LinearLayout)findViewById(R.id.question_layout);
+
+        //Für die Zufällig Auswahl der Namen sowie Schlucke
+        randomGenerator = new Random();
+
+        //Shared Preferences für die Textgröße und die mindestschluck sowie die maximal schlucke
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String questionSize = sharedPreferences.getString("text_size_question","32");
+        minDrink = Integer.parseInt(sharedPreferences.getString("min_drinkAmount", "1"));
+        maxDrink = Integer.parseInt(sharedPreferences.getString("max_drinkAmount", "4"));
+
+        //Damit keine Fehlermeldung kommt.
+        if (maxDrink < minDrink){
+            maxDrink = minDrink + 1;
+        }
 
         //Set everything
         Intent intent = getIntent();
@@ -42,20 +61,6 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         LinearLayout layout = (LinearLayout) findViewById(R.id.question_layout);
         layout.setOnClickListener(this);
 
-        //Für die Zufällig Auswahl der Namen sowie Schlucke
-        randomGenerator = new Random();
-
-        //Shared Preferences für die Textgröße und die mindestschluck sowie die maximal schlucke
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String questionSize = sharedPreferences.getString("text_size_question","32");
-        minDrink = Integer.parseInt(sharedPreferences.getString("min_drinkAmount", "1"));
-        maxDrink = Integer.parseInt(sharedPreferences.getString("max_drinkAmount", "4"));
-
-        //Damit keine Fehlermeldung kommt.
-        if (maxDrink < minDrink){
-            maxDrink = minDrink + 1;
-        }
-
         try {
             tvQuestions.setTextSize(Integer.valueOf(questionSize));
         }catch(Exception ex){
@@ -64,17 +69,23 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //Get Questions (from firebase) and fill questionPool
-    private String[] getQuestions(){
-        String[] tempArray = new String[rounds];
+    private Question[] getQuestions(){
+        Question[] tempArray = new Question[rounds];
         //Dummyfragen -> hier müssen wir die Questions aus der Localen abgespeicherten Firebasedb holen.
         for (int i = 0; i < tempArray.length; i++){
-            if (i%2 == 0) {
-                tempArray[i] = "" + i + ": Hier steht eine zukünftige Frage";
-            }else{
-                tempArray[i] = "" + i + ": %p muss %amount Schlucke von seinem Getränk nehmen. Nur zu Testzwecken: %2p";
-            }
+            tempArray[i] = MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size()));
         }
         return  tempArray;
+    }
+
+    //Get special number where there is a specific categoty
+    private int getRandomNumberWhereCategory(String category){
+        int output = randomGenerator.nextInt(MainActivity.questionsGlobal.size());
+        if (MainActivity.questionsGlobal.get(output).getCategory().equals(category)){
+            return output;
+        }else {
+            return getRandomNumberWhereCategory(category);
+        }
     }
 
     //Next question
@@ -82,6 +93,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         currentRound += 1;
         if (currentRound <= rounds){
             setQuestionTv(currentRound - 1);
+            setColor(currentRound - 1);
             setRoundsTv();
         }else{
             Intent intent = new Intent(this, EndScreenActivity.class);
@@ -91,8 +103,24 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
     //Set Questiontv
     private void setQuestionTv(int arrayInd) {
-        String tempText = questionsPool[arrayInd];
+        String tempText = questionsPool[arrayInd].getText();
         tvQuestions.setText(transformQuestion(tempText));
+    }
+    //Set Color
+    private void setColor(int arrayInd) {
+        switch (questionsPool[arrayInd].getCategory()){
+            case "Game":
+                linearLayout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundGame));
+                break;
+            case "Order":
+                linearLayout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundAll));
+                break;
+            case "Virus":
+                linearLayout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundVirus));
+                break;
+            default:
+                break;
+        }
     }
 
     //Transform text if there is replaceToken in it

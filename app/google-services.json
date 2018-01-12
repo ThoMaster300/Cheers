@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1044317833053",
+    "firebase_url": "https://cheers-c72b8.firebaseio.com",
+    "project_id": "cheers-c72b8",
+    "storage_bucket": "cheers-c72b8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044317833053:android:e8be41d04d9c8271",
+        "android_client_info": {
+          "package_name": "at.technikum_wien.cheers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1044317833053-0m129tfp1b25r36ppos2dansl9i0bo1c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8BYbSW4HGl6rvpw4Rx_tTsEkqVwDnrmA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

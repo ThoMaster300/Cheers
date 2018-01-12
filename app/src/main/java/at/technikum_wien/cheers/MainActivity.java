@@ -18,8 +18,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 //Startbildschirm
@@ -28,7 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button buttonPlay, buttonSettings, buttonMore;
     private TextView tvLastUpdate;
-
+    String test = "";
+    static List<Question> questionsGlobal = new ArrayList<Question>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +76,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //GetSetTV (hier würde ich immer einfach einen "Timestamp" reinhauen, wann die neueste DB gedownloaded wurde)
         tvLastUpdate = (TextView) findViewById(R.id.lastUpdate_tv);
-        tvLastUpdate.setText("Last update: " + new SimpleDateFormat("dd/MM/yy", Locale.getDefault()).format(new Date()));
+
+        //Firebase
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference ref = database.child("Orders");
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                //Hier müssen wir nur noch herausfinden, wie wir die Anzahl der Einträge herausfinden (hab jetzt immer statisch eine Zahl genommen)
+                for (int i = 0; i < 13; i++) {
+                    questionsGlobal.add(new Question(snapshot.child(Integer.toString(i)).child("Text").getValue().toString(),
+                            snapshot.child(Integer.toString(i)).child("Category").getValue().toString()));
+                }
+                tvLastUpdate.setText("Last update: " + new SimpleDateFormat("dd/MM/yy", Locale.getDefault()).format(new Date()));
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     @Override

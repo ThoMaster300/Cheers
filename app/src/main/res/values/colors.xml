@@ -6,4 +6,6 @@
     <color name="colorRed">#d84242</color>
     <color name="colorText">#FFFFFF</color>
     <color name="colorBackgroundAll">#7dc6ac</color>
+    <color name="colorBackgroundGame">#dd593b</color>
+    <color name="colorBackgroundVirus">#c7ce42</color>
 </resources>
