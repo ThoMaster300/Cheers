@@ -8,7 +8,7 @@
     tools:context="at.technikum_wien.cheers.PlayerActivity"
     android:weightSum="1"
     android:background="@color/colorBackgroundAll">
-
+    
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
