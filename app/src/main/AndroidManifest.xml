@@ -9,12 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/NoActionBar">
-       <!-- android:theme="@style/AppTheme"-->
+
+        <!-- android:theme="@style/AppTheme" -->
 
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,6 +27,10 @@
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".SubmissionActivtiy"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".PlayerActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
@@ -33,10 +38,9 @@
             android:name=".QuestionActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".EndScreenActivity"
-            android:screenOrientation="portrait"
-            >
-        </activity>
+        <activity
+            android:name=".EndScreenActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

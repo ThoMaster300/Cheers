@@ -2,7 +2,7 @@
     <string name="app_name">Cheers</string>
     <string name="play_button">Spielen</string>
     <string name="settings_button">Einstellungen</string>
-    <string name="more_button">Mehr</string>
+    <string name="more_button">Einsenden</string>
     <string name="playerChooseHeadline">Spielerauswahl</string>
     <string name="settingsHeadline">Einstellungen</string>
     <string name="add_button">Hinzufügen</string>
@@ -26,4 +26,12 @@
     <string name="settings_summary_min_drinkAmount">Klicke, um die Mindestschluckanzahl zu ändern.</string>
     <string name="settings_title_max_drinkAmount">Maximalschluck</string>
     <string name="settings_summary_max_drinkAmount">Klicke, um die Maximalschluckanzahl zu ändern.</string>
+
+    <string name="submissionCategory">Kategorie:</string>
+    <string name="submissionText">Text:</string>
+    <string name="submissionButton">Send</string>
+    <string name="submissionHeadline">Einsendung</string>
+    <string name="submissionCategoryGame">Spiel</string>
+    <string name="submissionCategoryNormal">Normal</string>
+    <string name="submissionCategoryVirus">Virus</string>
 </resources>

@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //Test for Endscreen
                 //ToDo: Delete after testing
-                intent = new Intent(this, EndScreenActivity.class);
+                intent = new Intent(this, SubmissionActivtiy.class);
                 startActivity(intent);
 
 
