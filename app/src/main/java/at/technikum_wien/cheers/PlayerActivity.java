@@ -49,14 +49,16 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        Intent intent;
-
         switch (view.getId()){
             case R.id.play_play_button:
                 if (playersPool.size()>= 2) {
-                    intent = new Intent(this, QuestionActivity.class);
-                    intent.putExtra(PlayerActivity.PLAYERS_TAG, transformPlayersArray());
-                    startActivity(intent);
+                    if(checkForDuplicates(playersPool)){
+                        Toast.makeText(this, getString(R.string.duplicatePlayersWarning), Toast.LENGTH_LONG).show();
+                    }else {
+                        Intent intent = new Intent(this, QuestionActivity.class);
+                        intent.putExtra(PlayerActivity.PLAYERS_TAG, transformPlayersArray());
+                        startActivity(intent);
+                    }
                 }else{
                     Toast toast = Toast.makeText(this, getString(R.string.notEnoughPlayerWarning), Toast.LENGTH_LONG);
                     toast.show();
@@ -67,7 +69,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                     Toast toast = Toast.makeText(this, getString(R.string.noValidName), Toast.LENGTH_LONG);
                     toast.show();
                 }else{
-                    if (enteredName.getText().toString().length() > 0) {
+                    if (enteredName.getText().toString().length() > 0 && !enteredName.getText().toString().equals(" ")) {
                         showInfo.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
                         playersPool.add(enteredName.getText().toString());
@@ -77,7 +79,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                             buttonPlay.setEnabled(true);
                         }
                     }else{
-                        Toast toast = Toast.makeText(this, getString(R.string.tooShortName), Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(this, getString(R.string.noValueEntered), Toast.LENGTH_LONG);
                         toast.show();
                     }
                 }
@@ -101,5 +103,20 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         return players;
+    }
+
+    private boolean checkForDuplicates(ArrayList<String> list){
+        boolean duplicateValues=false;
+        String[] arrayToCheck = new String[list.size()];
+        arrayToCheck = list.toArray(arrayToCheck);
+
+        for (int j=0;j<arrayToCheck.length;j++){
+            for (int k=j+1;k<arrayToCheck.length;k++) {
+                if (k != j && arrayToCheck[j].equals(arrayToCheck[k])) {
+                    duplicateValues = true;
+                }
+            }
+        }
+        return duplicateValues;
     }
 }
