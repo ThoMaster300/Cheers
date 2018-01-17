@@ -22,6 +22,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     Question[] questionsPool;
     Random randomGenerator;
     LinearLayout linearLayout;
+    int backCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         String questionSize = sharedPreferences.getString("text_size_question","32");
         minDrink = Integer.parseInt(sharedPreferences.getString("min_drinkAmount", "1"));
         maxDrink = Integer.parseInt(sharedPreferences.getString("max_drinkAmount", "4"));
+        backCounter = 0;
 
         //Damit keine Fehlermeldung kommt.
         if (maxDrink < minDrink){
@@ -99,6 +101,8 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         }else{
             Intent intent = new Intent(this, EndScreenActivity.class);
             startActivity(intent);
+            //finish activity to clear it from stack
+            finish();
         }
     }
 
@@ -171,6 +175,16 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(backCounter==0){
+            Toast.makeText(getBaseContext(), R.string.backWarning,Toast.LENGTH_SHORT).show();
+            backCounter++;
+        }else{
+            super.onBackPressed();
         }
     }
 }

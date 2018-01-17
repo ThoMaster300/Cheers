@@ -8,8 +8,9 @@
     <string name="add_button">Hinzufügen</string>
     <string name="pleaseAddPlayers">Bitte füge Spieler hinzu.</string>
     <string name="noValidName">Verwende keine Prozentsymbole und bleibe bitte unter 25 Zeichen.</string>
-    <string name="tooShortName">Bitte fügen sie erst etwas ein.</string>
+    <string name="noValueEntered">Bitte füge erst etwas ein.</string>
     <string name="notEnoughPlayerWarning">Du brauchst mindestens 2 Spieler um ein Spiel starten zu können.</string>
+    <string name="duplicatePlayersWarning">Bitte gib eindeutige Namen ein!</string>
 
     <string name="warningDialogMessage">"Genießen Sie Alkohol verantwortungsvoll. Diese App haftet nicht für Folgeschäden durch Betrinken."</string>
     <string name="warningDialogTitle">Warnhinweis</string>
@@ -34,4 +35,5 @@
     <string name="submissionCategoryGame">Spiel</string>
     <string name="submissionCategoryNormal">Normal</string>
     <string name="submissionCategoryVirus">Virus</string>
+    <string name="backWarning">Press back again for quiting!</string>
 </resources>
