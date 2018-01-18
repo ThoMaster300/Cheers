@@ -8,4 +8,5 @@
     <color name="colorBackgroundAll">#7dc6ac</color>
     <color name="colorBackgroundGame">#dd593b</color>
     <color name="colorBackgroundVirus">#c7ce42</color>
+    <color name="colorBackgroundVirusEnd">#dba13f</color>
 </resources>

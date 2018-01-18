@@ -19,11 +19,12 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
     int rounds, currentRound, minDrink, maxDrink;
     TextView tvRounds, tvQuestions;
-    String[] playersPool;
+    String[] playersPool, virusEndText;
+    int[] virusEndCounter;
     Question[] questionsPool;
     Random randomGenerator;
     LinearLayout linearLayout;
-    int backCounter;
+    int backCounter, virusCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,14 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         currentRound = 1;
         setRoundsTv();
         questionsPool = getQuestions();
+
+        virusEndText = new String[rounds];
+        virusEndCounter = new int[rounds];
+        for (int i = 0; i < virusEndCounter.length; i++){
+            virusEndCounter[i] = -1;
+        }
+        virusCounter = 0;
+
         setQuestionTv(currentRound - 1);
         setColor(currentRound - 1);
 
@@ -96,8 +105,8 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     private void nextQuestion(){
         currentRound += 1;
         if (currentRound <= rounds){
-            setQuestionTv(currentRound - 1);
             setColor(currentRound - 1);
+            setQuestionTv(currentRound - 1);
             setRoundsTv();
             backCounter = 0;
         }else{
@@ -108,10 +117,41 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    //Set Questiontv
+    //Set Questiontv und wenn Virus ist werden virus arrays gesetzt zum counten
     private void setQuestionTv(int arrayInd) {
-        String tempText = questionsPool[arrayInd].getText();
-        tvQuestions.setText(transformQuestion(tempText));
+        if (virusCounter > 0){
+            for (int i = 0; i < virusEndCounter.length; i++){
+                virusEndCounter[i] -= 1;
+            }
+        }
+
+        boolean oneVirusIsOnEnd = false;
+        int which = 0;
+
+        for (int i = 0; i < virusEndCounter.length; i++){
+            if (virusEndCounter[i] == 0){
+                oneVirusIsOnEnd = true;
+                which = i;
+            }
+        }
+
+        if (oneVirusIsOnEnd){
+            tvQuestions.setText(virusEndText[which]);
+            linearLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorBackgroundVirusEnd));
+            currentRound -= 1;
+        }else {
+            if (questionsPool[arrayInd].getCategory().equals("Virus")) {
+                virusEndText[virusCounter] = questionsPool[arrayInd].getText2();
+                virusEndCounter[virusCounter] = Math.round(rounds/5) + randomGenerator.nextInt(4);
+            }
+
+            Question tempQues = questionsPool[arrayInd];
+            tvQuestions.setText(transformQuestion(tempQues));
+
+            if (questionsPool[arrayInd].getCategory().equals("Virus")) {
+                virusCounter++;
+            }
+        }
     }
     //Set Color
     private void setColor(int arrayInd) {
@@ -131,8 +171,8 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //Transform text if there is replaceToken in it
-    private String transformQuestion(String text){
-        if (text.contains("%p") || text.contains("%2p") || text.contains("%amount")){
+    private String transformQuestion(Question question){
+        if (question.getText().contains("%p") || question.getText().contains("%2p") || question.getText().contains("%amount")){
             //Get names
             String firstName = getRandomPlayer();
             String secondName = getRandomPlayer(firstName);
@@ -145,9 +185,13 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
                 amount = minDrink;
             }
 
-            return text.replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
+            if (question.getCategory().equals("Virus")) {
+                virusEndText[virusCounter] = virusEndText[virusCounter].replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
+            }
+
+            return question.getText().replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
         }else{
-            return text;
+            return question.getText();
         }
     }
 
