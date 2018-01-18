@@ -2,6 +2,7 @@ package at.technikum_wien.cheers;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
@@ -98,6 +99,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
             setQuestionTv(currentRound - 1);
             setColor(currentRound - 1);
             setRoundsTv();
+            backCounter = 0;
         }else{
             Intent intent = new Intent(this, EndScreenActivity.class);
             startActivity(intent);
@@ -115,13 +117,13 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     private void setColor(int arrayInd) {
         switch (questionsPool[arrayInd].getCategory()){
             case "Game":
-                linearLayout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundGame));
+                linearLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorBackgroundGame));
                 break;
             case "Order":
-                linearLayout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundAll));
+                linearLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorBackgroundAll));
                 break;
             case "Virus":
-                linearLayout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundVirus));
+                linearLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorBackgroundVirus));
                 break;
             default:
                 break;
