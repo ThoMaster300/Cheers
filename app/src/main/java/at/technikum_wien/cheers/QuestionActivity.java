@@ -25,6 +25,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     Random randomGenerator;
     LinearLayout linearLayout;
     int backCounter, virusCounter;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         randomGenerator = new Random();
 
         //Shared Preferences für die Textgröße und die mindestschluck sowie die maximal schlucke
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String questionSize = sharedPreferences.getString("text_size_question","32");
         minDrink = Integer.parseInt(sharedPreferences.getString("min_drinkAmount", "1"));
         maxDrink = Integer.parseInt(sharedPreferences.getString("max_drinkAmount", "4"));
@@ -87,14 +88,29 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         //Dummyfragen -> hier müssen wir die Questions aus der Localen abgespeicherten Firebasedb holen.
         for (int i = 0; i < tempArray.length; i++){
             if (i >= tempArray.length/2) {
-                tempArray[i] = getQuestionFromGlobalWithoutVirus(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));
+                tempArray[i] = getQuestionFromGlobalWithoutVirus(getRandomQuestionFromGlobalWithSettings(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size()))));
             }else{
-                tempArray[i] = MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size()));
+                tempArray[i] = getRandomQuestionFromGlobalWithSettings(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));
             }
         }
         return  tempArray;
     }
 
+    private Question getRandomQuestionFromGlobalWithSettings(Question question){
+        boolean tempVirusBool = sharedPreferences.getBoolean("virusQuestionsBool", getResources().getBoolean(R.bool.bool_virusQuestions));
+        boolean tempGameBool = sharedPreferences.getBoolean("gameQuestionsBool", getResources().getBoolean(R.bool.bool_gameQuestions));
+
+        if (question.getCategory().equals("Virus") && tempVirusBool == false){
+            return getRandomQuestionFromGlobalWithSettings(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));
+        }
+        if (question.getCategory().equals("Game") && tempGameBool == false){
+            return getRandomQuestionFromGlobalWithSettings(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));
+        }
+
+        return question;
+    }
+
+    //Wie der Name sagt
     private Question getQuestionFromGlobalWithoutVirus(Question question) {
         if (question.getCategory().equals("Virus")){
             return getQuestionFromGlobalWithoutVirus(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));

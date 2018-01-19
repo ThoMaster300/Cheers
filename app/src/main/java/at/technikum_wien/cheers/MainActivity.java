@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String test = "";
     static List<Question> questionsGlobal = new ArrayList<Question>();
 
+    public static DatabaseReference database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,14 +80,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvLastUpdate = (TextView) findViewById(R.id.lastUpdate_tv);
 
         //Firebase
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        database = FirebaseDatabase.getInstance().getReference();
         DatabaseReference ref = database.child("Orders");
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                //Hier müssen wir nur noch herausfinden, wie wir die Anzahl der Einträge herausfinden (hab jetzt immer statisch eine Zahl genommen)
-                for (int i = 0; i < 13; i++) {
+                int questionCount = (int) snapshot.getChildrenCount();
+
+                for (int i = 0; i < questionCount; i++) {
                     if (snapshot.child(Integer.toString(i)).child("Category").getValue().toString().equals("Virus")){
                         questionsGlobal.add(new Question(snapshot.child(Integer.toString(i)).child("Text").getValue().toString(),
                                 snapshot.child(Integer.toString(i)).child("TextEnd").getValue().toString(),
@@ -95,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 snapshot.child(Integer.toString(i)).child("Category").getValue().toString()));
                     }
                 }
-                tvLastUpdate.setText("Last update: " + new SimpleDateFormat("dd/MM/yy", Locale.getDefault()).format(new Date()));
+                tvLastUpdate.setText("Last update: " + new SimpleDateFormat("dd.MM.yy", Locale.getDefault()).format(new Date()));
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

@@ -2,6 +2,7 @@ package at.technikum_wien.cheers;
 
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.widget.TextView;
 
 /**
  * Created by Nadja on 08.01.18.

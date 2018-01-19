@@ -6,7 +6,6 @@
         <EditTextPreference
             android:defaultValue="32"
             android:key="text_size_question"
-            android:textColor="@color/colorText"
             android:summary="@string/settings_summary_textsize_question"
             android:title="@string/settings_title_textsize_question" />
 
@@ -21,5 +20,17 @@
             android:key="max_drinkAmount"
             android:summary="@string/settings_summary_max_drinkAmount"
             android:title="@string/settings_title_max_drinkAmount" />
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/bool_virusQuestions"
+            android:key="virusQuestionsBool"
+            android:summary="@string/settings_summary_virusQuestions"
+            android:title="@string/settings_title_virusQuestions" />
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/bool_gameQuestions"
+            android:key="gameQuestionsBool"
+            android:summary="@string/settings_summary_gameQuestions"
+            android:title="@string/settings_title_gameQuestions" />
 
 </PreferenceScreen>

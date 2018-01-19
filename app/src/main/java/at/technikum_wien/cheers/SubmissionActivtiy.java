@@ -9,9 +9,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static android.R.attr.name;
 
 public class SubmissionActivtiy extends AppCompatActivity implements OnItemSelectedListener, View.OnClickListener {
 
@@ -63,8 +71,24 @@ public class SubmissionActivtiy extends AppCompatActivity implements OnItemSelec
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.submissionButton:
+                sendQuestion();
                 break;
         }
+    }
+
+    private void sendQuestion() {
+        DatabaseReference ref = MainActivity.database.child("Drafts");
+
+        Map<String, String> inputData = new HashMap<String, String>();
+
+        inputData.put("Category", spinner.getSelectedItem().toString());
+        inputData.put("Text", editText.toString());
+
+        ref.push().setValue(inputData);
+
+        editText.setText("");
+        Toast toast = Toast.makeText(this, getString(R.string.questionSent), Toast.LENGTH_LONG);
+        toast.show();
     }
 }
 

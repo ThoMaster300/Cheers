@@ -10,7 +10,7 @@
     <string name="noValidName">Verwende keine Prozentsymbole und bleibe bitte unter 25 Zeichen.</string>
     <string name="noValueEntered">Bitte füge erst etwas ein.</string>
     <string name="notEnoughPlayerWarning">Du brauchst mindestens 2 Spieler um ein Spiel starten zu können.</string>
-    <string name="duplicatePlayersWarning">Bitte gib eindeutige Namen ein!</string>
+    <string name="duplicatePlayersWarning">Bitte verwende keine Namen mehrfach!</string>
 
     <string name="warningDialogMessage">"Genießen Sie Alkohol verantwortungsvoll. Diese App haftet nicht für Folgeschäden durch Betrinken."</string>
     <string name="warningDialogTitle">Warnhinweis</string>
@@ -27,6 +27,10 @@
     <string name="settings_summary_min_drinkAmount">Klicke, um die Mindestschluckanzahl zu ändern.</string>
     <string name="settings_title_max_drinkAmount">Maximalschluck</string>
     <string name="settings_summary_max_drinkAmount">Klicke, um die Maximalschluckanzahl zu ändern.</string>
+    <string name="settings_title_virusQuestions">Virusfragen</string>
+    <string name="settings_summary_virusQuestions">Schalte die Virusfragen ein oder aus.</string>
+    <string name="settings_title_gameQuestions">Spielfragen</string>
+    <string name="settings_summary_gameQuestions">Schalte die Spielfragen ein oder aus.</string>
 
     <string name="submissionCategory">Kategorie:</string>
     <string name="submissionText">Text:</string>
@@ -36,4 +40,5 @@
     <string name="submissionCategoryNormal">Normal</string>
     <string name="submissionCategoryVirus">Virus</string>
     <string name="backWarning">Press back again for quiting!</string>
+    <string name="questionSent">Question was sent. Thank you!</string>
 </resources>
