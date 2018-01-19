@@ -77,14 +77,15 @@ public class SubmissionActivtiy extends AppCompatActivity implements OnItemSelec
     }
 
     private void sendQuestion() {
-        DatabaseReference ref = MainActivity.database.child("Drafts");
+        /*TODO: Geht leider irendwie nicht. Hier fehlt noch das Senden der Frage in die Drafttabelle.*/
+        /*DatabaseReference ref = MainActivity.database.child("Drafts");
 
         Map<String, String> inputData = new HashMap<String, String>();
 
         inputData.put("Category", spinner.getSelectedItem().toString());
         inputData.put("Text", editText.toString());
 
-        ref.push().setValue(inputData);
+        ref.push().setValue(inputData);*/
 
         editText.setText("");
         Toast toast = Toast.makeText(this, getString(R.string.questionSent), Toast.LENGTH_LONG);
