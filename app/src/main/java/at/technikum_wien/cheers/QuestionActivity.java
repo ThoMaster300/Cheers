@@ -86,9 +86,21 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         Question[] tempArray = new Question[rounds];
         //Dummyfragen -> hier müssen wir die Questions aus der Localen abgespeicherten Firebasedb holen.
         for (int i = 0; i < tempArray.length; i++){
-            tempArray[i] = MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size()));
+            if (i >= tempArray.length/2) {
+                tempArray[i] = getQuestionFromGlobalWithoutVirus(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));
+            }else{
+                tempArray[i] = MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size()));
+            }
         }
         return  tempArray;
+    }
+
+    private Question getQuestionFromGlobalWithoutVirus(Question question) {
+        if (question.getCategory().equals("Virus")){
+            return getQuestionFromGlobalWithoutVirus(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));
+        }
+
+        return question;
     }
 
     //Get special number where there is a specific categoty
@@ -142,7 +154,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         }else {
             if (questionsPool[arrayInd].getCategory().equals("Virus")) {
                 virusEndText[virusCounter] = questionsPool[arrayInd].getText2();
-                virusEndCounter[virusCounter] = Math.round(rounds/5) + randomGenerator.nextInt(4);
+                virusEndCounter[virusCounter] = Math.round(rounds/5) + randomGenerator.nextInt(Math.round(rounds/8));
             }
 
             Question tempQues = questionsPool[arrayInd];
