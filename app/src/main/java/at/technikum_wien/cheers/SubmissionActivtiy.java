@@ -11,12 +11,18 @@ import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static android.R.attr.name;
@@ -78,21 +84,20 @@ public class SubmissionActivtiy extends AppCompatActivity implements OnItemSelec
 
     private void sendQuestion() {
         /*TODO: Geht leider irendwie nicht. Hier fehlt noch das Senden der Frage in die Drafttabelle.*/
-        /**/DatabaseReference ref = MainActivity.database.child("Drafts");
+        DatabaseReference ref = MainActivity.database.child("Drafts");
 
         HashMap<String, String> inputData = new HashMap<String, String>();
-
         inputData.put("Category", spinner.getSelectedItem().toString());
-        inputData.put("Text", editText.toString());
+        inputData.put("Text", editText.getText().toString());
 
-        ref.setValue(inputData);
+        ref.push().setValue(inputData);
+
 
         editText.setText("");
         Toast toast = Toast.makeText(this, getString(R.string.questionSent), Toast.LENGTH_LONG);
         toast.show();
 
 
-       // ref.addValueEventListener()
 
 
 
