@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +19,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     TextView tvRounds, tvQuestions;
     String[] playersPool, virusEndText;
     int[] virusEndCounter;
-    Question[] questionsPool;
+    Instruction[] questionsPool;
     Random randomGenerator;
     LinearLayout linearLayout;
     int backCounter, virusCounter;
@@ -83,46 +81,47 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //Get Questions (from firebase) and fill questionPool
-    private Question[] getQuestions(){
-        Question[] tempArray = new Question[rounds];
+    private Instruction[] getQuestions(){
+        //ToDo: Check if instruction was used already
+        Instruction[] tempArray = new Instruction[rounds];
         //Dummyfragen -> hier müssen wir die Questions aus der Localen abgespeicherten Firebasedb holen.
         for (int i = 0; i < tempArray.length; i++){
             if (i >= tempArray.length/2) {
-                tempArray[i] = getQuestionFromGlobalWithoutVirus(getRandomQuestionFromGlobalWithSettings(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size()))));
+                tempArray[i] = getQuestionFromGlobalWithoutVirus(getRandomQuestionFromGlobalWithSettings(MainActivity.instructionsGlobal.get(randomGenerator.nextInt(MainActivity.instructionsGlobal.size()))));
             }else{
-                tempArray[i] = getRandomQuestionFromGlobalWithSettings(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));
+                tempArray[i] = getRandomQuestionFromGlobalWithSettings(MainActivity.instructionsGlobal.get(randomGenerator.nextInt(MainActivity.instructionsGlobal.size())));
             }
         }
         return  tempArray;
     }
 
-    private Question getRandomQuestionFromGlobalWithSettings(Question question){
+    private Instruction getRandomQuestionFromGlobalWithSettings(Instruction instruction){
         boolean tempVirusBool = sharedPreferences.getBoolean("virusQuestionsBool", getResources().getBoolean(R.bool.bool_virusQuestions));
         boolean tempGameBool = sharedPreferences.getBoolean("gameQuestionsBool", getResources().getBoolean(R.bool.bool_gameQuestions));
 
-        if (question.getCategory().equals("Virus") && tempVirusBool == false){
-            return getRandomQuestionFromGlobalWithSettings(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));
+        if (instruction.getCategory().equals("Virus") && tempVirusBool == false){
+            return getRandomQuestionFromGlobalWithSettings(MainActivity.instructionsGlobal.get(randomGenerator.nextInt(MainActivity.instructionsGlobal.size())));
         }
-        if (question.getCategory().equals("Game") && tempGameBool == false){
-            return getRandomQuestionFromGlobalWithSettings(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));
+        if (instruction.getCategory().equals("Game") && tempGameBool == false){
+            return getRandomQuestionFromGlobalWithSettings(MainActivity.instructionsGlobal.get(randomGenerator.nextInt(MainActivity.instructionsGlobal.size())));
         }
 
-        return question;
+        return instruction;
     }
 
     //Wie der Name sagt
-    private Question getQuestionFromGlobalWithoutVirus(Question question) {
-        if (question.getCategory().equals("Virus")){
-            return getQuestionFromGlobalWithoutVirus(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));
+    private Instruction getQuestionFromGlobalWithoutVirus(Instruction instruction) {
+        if (instruction.getCategory().equals("Virus")){
+            return getQuestionFromGlobalWithoutVirus(MainActivity.instructionsGlobal.get(randomGenerator.nextInt(MainActivity.instructionsGlobal.size())));
         }
 
-        return question;
+        return instruction;
     }
 
     //Get special number where there is a specific categoty
     private int getRandomNumberWhereCategory(String category){
-        int output = randomGenerator.nextInt(MainActivity.questionsGlobal.size());
-        if (MainActivity.questionsGlobal.get(output).getCategory().equals(category)){
+        int output = randomGenerator.nextInt(MainActivity.instructionsGlobal.size());
+        if (MainActivity.instructionsGlobal.get(output).getCategory().equals(category)){
             return output;
         }else {
             return getRandomNumberWhereCategory(category);
@@ -169,11 +168,11 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
             currentRound -= 1;
         }else {
             if (questionsPool[arrayInd].getCategory().equals("Virus")) {
-                virusEndText[virusCounter] = questionsPool[arrayInd].getText2();
+                virusEndText[virusCounter] = questionsPool[arrayInd].getText();
                 virusEndCounter[virusCounter] = Math.round(rounds/5) + randomGenerator.nextInt(Math.round(rounds/8));
             }
 
-            Question tempQues = questionsPool[arrayInd];
+            Instruction tempQues = questionsPool[arrayInd];
             tvQuestions.setText(transformQuestion(tempQues));
 
             if (questionsPool[arrayInd].getCategory().equals("Virus")) {
@@ -199,8 +198,8 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //Transform text if there is replaceToken in it
-    private String transformQuestion(Question question){
-        if (question.getText().contains("%p") || question.getText().contains("%2p") || question.getText().contains("%amount")){
+    private String transformQuestion(Instruction instruction){
+        if (instruction.getText().contains("%p") || instruction.getText().contains("%2p") || instruction.getText().contains("%amount")){
             //Get names
             String firstName = getRandomPlayer();
             String secondName = getRandomPlayer(firstName);
@@ -213,13 +212,13 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
                 amount = minDrink;
             }
 
-            if (question.getCategory().equals("Virus")) {
+            if (instruction.getCategory().equals("Virus")) {
                 virusEndText[virusCounter] = virusEndText[virusCounter].replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
             }
 
-            return question.getText().replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
+            return instruction.getText().replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
         }else{
-            return question.getText();
+            return instruction.getText();
         }
     }
 
