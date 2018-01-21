@@ -11,8 +11,11 @@ import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -92,7 +95,7 @@ public class SubmissionActivtiy extends AppCompatActivity implements OnItemSelec
         inputData.put("user", "AndroidId1");
 
         ref.push().setValue(inputData);
-
+      
         editText.setText("");
         Toast toast = Toast.makeText(this, getString(R.string.questionSent), Toast.LENGTH_LONG);
         toast.show();
