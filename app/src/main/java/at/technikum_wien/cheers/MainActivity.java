@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(!(getIntent().hasExtra("intentFromEndScreen"))){
             WarningDialogFragment warningDialog= new WarningDialogFragment();
             warningDialog.show(getFragmentManager(), "warning");
-        }
-        */
+        }*/
+
         setContentView(R.layout.activity_main);
 
         //GetSetButtons
