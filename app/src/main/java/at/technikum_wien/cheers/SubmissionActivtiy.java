@@ -1,5 +1,6 @@
 package at.technikum_wien.cheers;
 
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -88,11 +89,13 @@ public class SubmissionActivtiy extends AppCompatActivity implements OnItemSelec
 
         Map<String, String> inputData = new HashMap<String, String>();
 
+        String android_id = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+
         inputData.put("kategorie", spinner.getSelectedItem().toString());
         inputData.put("text", editText.getText().toString());
         inputData.put("timestamp",(new SimpleDateFormat("YYYY.MM.DD HH:MM:SS", Locale.getDefault()).format(new Date())).toString());
-        inputData.put("typ", "TestTyp");
-        inputData.put("user", "AndroidId1");
+        inputData.put("typ", "normal");
+        inputData.put("user", android_id);
 
         ref.push().setValue(inputData);
       
