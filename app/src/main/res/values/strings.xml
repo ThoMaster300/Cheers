@@ -38,4 +38,6 @@
     <string name="submissionHeadline">Einsendung</string>
     <string name="backWarning">Press back again for quiting!</string>
     <string name="questionSent">Question was sent. Thank you!</string>
+
+    <string name="virusShowHeader">"Regel|Dauer"</string>
 </resources>

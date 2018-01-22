@@ -312,7 +312,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private String transformVirusArray() {
-        String virus = "Regel|Dauer:";
+        String virus = getString(R.string.virusShowHeader);
 
         for (int i = 0; i < virusEndText.length; i++){
             if (virusEndCounter[i] > 0){
