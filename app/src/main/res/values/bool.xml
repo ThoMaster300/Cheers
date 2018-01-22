@@ -2,5 +2,5 @@
 <resources>
     <bool name="bool_virusQuestions">true</bool>
     <bool name="bool_gameQuestions">true</bool>
-    <bool name="bool_reminderNotifications">true</bool>
+    <bool name="bool_reminderNotifications">false</bool>
 </resources>
