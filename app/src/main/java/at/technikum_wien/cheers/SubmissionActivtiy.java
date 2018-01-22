@@ -48,9 +48,9 @@ public class SubmissionActivtiy extends AppCompatActivity implements OnItemSelec
 
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
-        categories.add(getResources().getString(R.string.submissionCategoryNormal));
-        categories.add(getResources().getString(R.string.submissionCategoryGame));
-        categories.add(getResources().getString(R.string.submissionCategoryVirus));
+        categories.add(MainActivity.NORMALSTRING);
+        categories.add(MainActivity.GAMESTRING);
+        categories.add(MainActivity.VIRUSSTRING);
 
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);

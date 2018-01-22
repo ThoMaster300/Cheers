@@ -20,15 +20,14 @@ public class Instruction {
     }
 
     private void seperateText(String text){
-       int index = text.indexOf("|");
+        int index = text.indexOf("|");
         if(index!=-1){
-            this.text = text.substring(0,index-1);
+            this.text = text.substring(0,index);
             this.text2 = text.substring(index+1,text.length());
         }else{
             this.text = text;
             this.text2 = "";
         }
-
     }
 
     public String getText() {

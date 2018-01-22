@@ -41,7 +41,11 @@
         <activity
             android:name=".EndScreenActivity"
             android:parentActivityName=".PlayerActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ShowVirusActivity"
+            android:parentActivityName=".QuestionActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

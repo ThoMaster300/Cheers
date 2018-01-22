@@ -30,6 +30,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static DatabaseReference database;
 
+    public static final String VIRUSSTRING = "virus";
+    public static final String GAMESTRING = "spiel";
+    public static final String NORMALSTRING = "normal";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

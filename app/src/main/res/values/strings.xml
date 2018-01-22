@@ -36,9 +36,6 @@
     <string name="submissionText">Text:</string>
     <string name="submissionButton">Send</string>
     <string name="submissionHeadline">Einsendung</string>
-    <string name="submissionCategoryGame">Spiel</string>
-    <string name="submissionCategoryNormal">Normal</string>
-    <string name="submissionCategoryVirus">Virus</string>
     <string name="backWarning">Press back again for quiting!</string>
     <string name="questionSent">Question was sent. Thank you!</string>
 </resources>
