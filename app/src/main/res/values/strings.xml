@@ -38,6 +38,8 @@
     <string name="submissionHeadline">Einsendung</string>
     <string name="backWarning">Press back again for quiting!</string>
     <string name="questionSent">Question was sent. Thank you!</string>
-
+    <string name="drinkReminderNotificationChannelID">NotificationChannelDrinkReminder</string>
+    <string name="settingsNotificationSummary">Schalte Erinnerungs-Benachrichtigungen ein oder aus und starte die App neu.</string>
+    <string name="settingsNotificationTitle">Erinnerungen</string>
     <string name="virusShowHeader">"Regel|Dauer"</string>
 </resources>

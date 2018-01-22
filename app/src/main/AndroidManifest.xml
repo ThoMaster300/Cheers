@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="at.technikum_wien.cheers">
 
+
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 
     <application
         android:allowBackup="true"
@@ -43,11 +46,13 @@
         <activity
             android:name=".EndScreenActivity"
             android:parentActivityName=".PlayerActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ShowVirusActivity"
             android:parentActivityName=".QuestionActivity"
             android:screenOrientation="landscape" />
+   <receiver android:name=".NotificationReceiver"/>
+
     </application>
 
 </manifest>

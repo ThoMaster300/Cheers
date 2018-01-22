@@ -33,4 +33,10 @@
             android:summary="@string/settings_summary_gameQuestions"
             android:title="@string/settings_title_gameQuestions" />
 
+        <CheckBoxPreference
+            android:defaultValue="@bool/bool_reminderNotifications"
+            android:key="reminderNotifications"
+            android:summary="@string/settingsNotificationSummary"
+            android:title="@string/settingsNotificationTitle" />
+
 </PreferenceScreen>
