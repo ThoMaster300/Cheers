@@ -27,7 +27,7 @@ dependencies {
     
     compile 'com.android.support:preference-v7:26.+'
     compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.android.support:recyclerview-v7:26.+
+    compile 'com.android.support:recyclerview-v7:26.+'
     compile 'com.android.support:design:26.+'
   
     compile 'com.google.firebase:firebase-database:10.2.4'
