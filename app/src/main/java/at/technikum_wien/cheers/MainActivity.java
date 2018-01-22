@@ -41,6 +41,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     SharedPreferences sharedPreferences;
+    SharedPreferences preferences;
 
     private Button buttonPlay, buttonSettings, buttonMore;
     private TextView tvLastUpdate;
@@ -112,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean doNotificationsBool = sharedPreferences.getBoolean("reminderNotifications", getResources().getBoolean(R.bool.bool_reminderNotifications));
         if(doNotificationsBool)
@@ -120,8 +120,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             triggerNotification();
         }
 
-
     }
+
 
     @Override
     public void onClick(View view) {
@@ -151,8 +151,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void triggerNotification(){
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 18);
-        calendar.set(Calendar.MINUTE, 48);
+        calendar.set(Calendar.HOUR_OF_DAY, 15);
+        calendar.set(Calendar.MINUTE, 07);
         calendar.set(Calendar.SECOND, 0);
         Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

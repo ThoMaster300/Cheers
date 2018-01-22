@@ -95,25 +95,6 @@ public class NotificationReceiver extends BroadcastReceiver {
         }
 
 
-
-
-        /*boolean appIsRunning = isAppRunning(context, "at.technikum.cheers");
-        if(appIsRunning == false){
-            notificationManager.notify(DRINK_REMINDER_NOTIFICATION_ID, builder.build());
-        }*/
-
-
-        /*
-    TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
-    taskStackBuilder.addNextIntentWithParentStack(intent);
-    PendingIntent pendingIntent = taskStackBuilder.
-        getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-    notificationManager.notify(notificationId, notificationBuilder.build());
-
-         */
-
     }
 
     public static boolean isAppRunning(final Context context, final String packageName) {
