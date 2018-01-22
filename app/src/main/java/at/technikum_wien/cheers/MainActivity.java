@@ -44,7 +44,7 @@ import java.util.Locale;
 
 //Startbildschirm
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     SharedPreferences sharedPreferences;
     SharedPreferences preferences;
@@ -193,11 +193,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean doNotificationsBool = sharedPreferences.getBoolean("reminderNotifications", getResources().getBoolean(R.bool.bool_reminderNotifications));
-        if(doNotificationsBool)
-        {
-            triggerNotification();
-        }
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
 
     }
 
@@ -228,16 +225,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void triggerNotification(){
-       /* Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 15);
-        calendar.set(Calendar.MINUTE, 07);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 17);
+        calendar.set(Calendar.MINUTE, 49);
         calendar.set(Calendar.SECOND, 0);
-        */
+
         Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-        alarmManager.setRepeating(alarmManager.RTC_WAKEUP, System.currentTimeMillis(), alarmManager.INTERVAL_DAY*7, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        //alarmManager.setRepeating(alarmManager.RTC_WAKEUP, System.currentTimeMillis(), alarmManager.INTERVAL_DAY*7, pendingIntent);
 
     }
     
@@ -247,4 +244,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("reminderNotifications")) {
+            boolean doNotificationsBool = sharedPreferences.getBoolean("reminderNotifications", getResources().getBoolean(R.bool.bool_reminderNotifications));
+            if(doNotificationsBool)
+            {
+                triggerNotification();
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Unregister VisualizerActivity as an OnPreferenceChangedListener to avoid any memory leaks.
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+
 }
