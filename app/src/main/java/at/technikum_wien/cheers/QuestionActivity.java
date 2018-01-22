@@ -284,7 +284,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
             if (instruction.getCategory().equals(MainActivity.VIRUSSTRING)) {
                 virusEndText[virusCounter] = virusEndText[virusCounter].replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
-                virusStartText[virusCounter] = virusEndText[virusCounter].replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
+                virusStartText[virusCounter] = virusStartText[virusCounter].replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
             }
 
             return instruction.getText().replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
@@ -314,7 +314,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     private String transformVirusArray() {
         String virus = getString(R.string.virusShowHeader);
 
-        for (int i = 0; i < virusEndText.length; i++){
+        for (int i = 0; i < virusEndText.length - 1; i++){
             if (virusEndCounter[i] > 0){
                 virus += virusStartText[i]+"|"+virusEndCounter[i]+":";
             }

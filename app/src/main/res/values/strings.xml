@@ -46,5 +46,5 @@
     <string name="drinkReminderNotificationChannelID">NotificationChannelDrinkReminder</string>
     <string name="settingsNotificationSummary">Schalte Erinnerungs-Benachrichtigungen ein oder aus und starte die App neu.</string>
     <string name="settingsNotificationTitle">Erinnerungen</string>
-    <string name="virusShowHeader">"Regel|Dauer"</string>
+    <string name="virusShowHeader">"Virus|Dauer:"</string>
 </resources>
