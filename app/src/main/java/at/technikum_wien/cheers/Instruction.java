@@ -1,10 +1,12 @@
 package at.technikum_wien.cheers;
 
+import java.io.Serializable;
+
 /**
  * Created by DominikRossmanith on 12.01.2018.
  */
 
-public class Instruction {
+public class Instruction implements Serializable {
 
     private String text;
     private String category;

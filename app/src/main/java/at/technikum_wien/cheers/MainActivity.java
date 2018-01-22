@@ -1,8 +1,14 @@
 package at.technikum_wien.cheers;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,6 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonPlay, buttonSettings, buttonMore;
     private TextView tvLastUpdate;
     String test = "";
-    static List<Instruction> instructionsGlobal = new ArrayList<Instruction>();
+    static List<Instruction> instructionsGlobal = new ArrayList<>();
 
     public static DatabaseReference database;
 
@@ -75,6 +83,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         database = FirebaseDatabase.getInstance().getReference();
         DatabaseReference ref = database.child("anweisungen");
 
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+
+        // load tasks from preference
+        if(!isNetworkAvailable()) {
+            SharedPreferences prefs = getSharedPreferences("SaveListSharedPrefs", Context.MODE_PRIVATE);
+
+            try {
+                instructionsGlobal = (ArrayList<Instruction>) ObjectSerializer.deserialize(prefs.getString("Instructions", ObjectSerializer.serialize(new ArrayList<Instruction>())));
+            } catch (IOException e) {
+                //e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                //e.printStackTrace();
+            } catch (ClassCastException e){
+                //e.printStackTrace();
+            }
+        }
+
+
+
         ref.addChildEventListener(new ChildEventListener() {
 
             @Override
@@ -88,10 +116,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 text = dataSnapshot.child("text").getValue().toString();
                 typ = dataSnapshot.child("typ").getValue().toString();
 
-                instructionsGlobal.add(new Instruction(text, kategorie, typ, id));
+
+                Instruction newInst = new Instruction(text, kategorie, typ, id);
+                instructionsGlobal.add(newInst);
 
                 //tvLastUpdate.setText("Last update: " + new SimpleDateFormat("dd.MM.yy", Locale.getDefault()).format(new Date()));
+
+
+
+                // save the task list to shared preferences
+                SharedPreferences prefs = getSharedPreferences("SaveListSharedPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                try {
+                    editor.putString("Instructions", ObjectSerializer.serialize((Serializable) instructionsGlobal));
+                } catch (IOException e) {
+                    //e.printStackTrace();
+                }
+                editor.commit();
+
             }
+
+
 
 
             @Override
@@ -154,5 +199,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
