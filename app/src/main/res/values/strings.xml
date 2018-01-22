@@ -16,6 +16,11 @@
     <string name="warningDialogTitle">Warnhinweis</string>
     <string name="warningDialogPositiveButton">Spielen</string>
     <string name="warningDialogNegativeButton">Schließen</string>
+
+    <string name="warningConnectionDialogMessage">"Zum Spielen von Cheers wird beim ersten Start eine aktive Internetverbindung benötigt."</string>
+    <string name="warningConnectionDialogTitle">Warnhinweis</string>
+    <string name="warningConnectionDialogNegativeButton">Ok</string>
+
     <string name="endScreenTitle">Ende</string>
     <string name="endScreenMessage">Bravo! Ihr habt Cheers erfolgreich beendet. Wenn Ihr noch immer nicht genug vom Alkohol habt, dann drückt Restart!</string>
     <string name="endScreenButtonHome">HOME</string>

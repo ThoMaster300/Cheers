@@ -78,11 +78,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         #
         #
         #####################################################################*/
-        /*
-        if(!(getIntent().hasExtra("intentFromEndScreen"))){
-            WarningDialogFragment warningDialog= new WarningDialogFragment();
-            warningDialog.show(getFragmentManager(), "warning");
-        }*/
+
+
 
         setContentView(R.layout.activity_main);
 
@@ -103,6 +100,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
+        if(instructionsGlobal.isEmpty()&&!isNetworkAvailable()){
+            if(!(getIntent().hasExtra("intentFromEndScreen"))){
+                WarningDialogConnectionFragment warningDialog= new WarningDialogConnectionFragment();
+                warningDialog.show(getFragmentManager(), "warning");
+            }
+        }else{
+            if(!(getIntent().hasExtra("intentFromEndScreen"))){
+                WarningDialogFragment warningDialog= new WarningDialogFragment();
+                warningDialog.show(getFragmentManager(), "warning");
+            }
+        }
 
         // load tasks from preference
         if(!isNetworkAvailable()) {
@@ -118,8 +126,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //e.printStackTrace();
             }
         }
-
-
 
         ref.addChildEventListener(new ChildEventListener() {
 
@@ -140,8 +146,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //tvLastUpdate.setText("Last update: " + new SimpleDateFormat("dd.MM.yy", Locale.getDefault()).format(new Date()));
 
-
-
                 // save the task list to shared preferences
                 SharedPreferences prefs = getSharedPreferences("SaveListSharedPrefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
@@ -153,9 +157,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 editor.commit();
 
             }
-
-
-
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -200,7 +201,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
     @Override
     public void onClick(View view) {
         Intent intent;
@@ -228,18 +228,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void triggerNotification(){
-        Calendar calendar = Calendar.getInstance();
+       /* Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 15);
         calendar.set(Calendar.MINUTE, 07);
         calendar.set(Calendar.SECOND, 0);
+        */
         Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-    }
+        //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        alarmManager.setRepeating(alarmManager.RTC_WAKEUP, System.currentTimeMillis(), alarmManager.INTERVAL_DAY*7, pendingIntent);
 
-    //alarmManager.setRepeating(alarmManager.RTC_WAKEUP, System.currentTimeInMillis(), alarmManager.INTERVAL_DAY*7, pendingIntent);
-  
+    }
+    
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
