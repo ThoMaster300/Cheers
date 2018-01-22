@@ -2,30 +2,34 @@ package at.technikum_wien.cheers;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class QuestionActivity extends AppCompatActivity implements View.OnClickListener{
 
     int rounds, currentRound, minDrink, maxDrink;
     TextView tvRounds, tvQuestions;
-    String[] playersPool, virusEndText;
+    String[] playersPool, virusEndText, virusStartText;
     int[] virusEndCounter;
-    Question[] questionsPool;
+    Instruction[] questionsPool;
     Random randomGenerator;
     LinearLayout linearLayout;
     int backCounter, virusCounter;
     SharedPreferences sharedPreferences;
+    ArrayList<Instruction> noRepeatList = new ArrayList<Instruction>();
+
+    static String VIRUS_TAG = "tag_for_virus";
+    private static boolean duplicateIsNotAllowed = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,16 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
         //Unser Layout finden
         linearLayout = (LinearLayout)findViewById(R.id.question_layout);
+
+        //Floatingbutton
+        FloatingActionButton myFab = (FloatingActionButton)findViewById(R.id.showVirusButton);
+        myFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(QuestionActivity.this, ShowVirusActivity.class);
+                intent.putExtra(VIRUS_TAG, transformVirusArray());
+                startActivity(intent);
+            }
+        });
 
         //Für die Zufällig Auswahl der Namen sowie Schlucke
         randomGenerator = new Random();
@@ -63,6 +77,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         questionsPool = getQuestions();
 
         virusEndText = new String[rounds];
+        virusStartText = new String[rounds];
         virusEndCounter = new int[rounds];
         for (int i = 0; i < virusEndCounter.length; i++){
             virusEndCounter[i] = -1;
@@ -83,46 +98,94 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //Get Questions (from firebase) and fill questionPool
-    private Question[] getQuestions(){
-        Question[] tempArray = new Question[rounds];
-        //Dummyfragen -> hier müssen wir die Questions aus der Localen abgespeicherten Firebasedb holen.
+    private Instruction[] getQuestions(){
+        //ToDo: Check if instruction was used already
+        Instruction[] tempArray = new Instruction[rounds];
+        Instruction tempInstruction = null;
+
         for (int i = 0; i < tempArray.length; i++){
             if (i >= tempArray.length/2) {
-                tempArray[i] = getQuestionFromGlobalWithoutVirus(getRandomQuestionFromGlobalWithSettings(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size()))));
+                tempInstruction = getInstruction1(getQuestionFromGlobalWithoutVirus(getRandomQuestionFromGlobalWithSettings(MainActivity.instructionsGlobal.get(randomGenerator.nextInt(MainActivity.instructionsGlobal.size())))));
+                tempArray[i] = tempInstruction;
+                if (!tempInstruction.getCategory().equals(MainActivity.NORMALSTRING)) {
+                    noRepeatList.add(tempInstruction);
+                }
             }else{
-                tempArray[i] = getRandomQuestionFromGlobalWithSettings(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));
+                tempInstruction = getInstruction2(getRandomQuestionFromGlobalWithSettings(MainActivity.instructionsGlobal.get(randomGenerator.nextInt(MainActivity.instructionsGlobal.size()))));
+                tempArray[i] = tempInstruction;
+                if (!tempInstruction.getCategory().equals(MainActivity.NORMALSTRING)) {
+                    noRepeatList.add(tempInstruction);
+                }
             }
         }
         return  tempArray;
     }
 
-    private Question getRandomQuestionFromGlobalWithSettings(Question question){
+    private Instruction getInstruction1(Instruction i){
+        boolean tempDuplicate = false;
+
+        if (duplicateIsNotAllowed || !i.getCategory().equals(MainActivity.NORMALSTRING)) {
+        if (noRepeatList.size() > 0){
+            for (Instruction inst:noRepeatList) {
+                if (inst.getText().equals(i.getText())) {
+                    tempDuplicate = true;
+                    break;
+                }
+            }
+        }
+            if (tempDuplicate) {
+                return getInstruction1(getQuestionFromGlobalWithoutVirus(getRandomQuestionFromGlobalWithSettings(MainActivity.instructionsGlobal.get(randomGenerator.nextInt(MainActivity.instructionsGlobal.size())))));
+            }
+        }
+        return i;
+    }
+
+    private Instruction getInstruction2(Instruction i){
+        boolean tempDuplicate = false;
+
+        if (duplicateIsNotAllowed  || !i.getCategory().equals(MainActivity.NORMALSTRING)) {
+            if (noRepeatList.size() > 0){
+                for (Instruction inst:noRepeatList) {
+                    if (inst.getText().equals(i.getText())) {
+                        tempDuplicate = true;
+                        break;
+                    }
+                }
+            }
+            if (tempDuplicate) {
+                return getInstruction2(getRandomQuestionFromGlobalWithSettings(MainActivity.instructionsGlobal.get(randomGenerator.nextInt(MainActivity.instructionsGlobal.size()))));
+            }
+        }
+        return i;
+    }
+
+    private Instruction getRandomQuestionFromGlobalWithSettings(Instruction instruction){
         boolean tempVirusBool = sharedPreferences.getBoolean("virusQuestionsBool", getResources().getBoolean(R.bool.bool_virusQuestions));
         boolean tempGameBool = sharedPreferences.getBoolean("gameQuestionsBool", getResources().getBoolean(R.bool.bool_gameQuestions));
 
-        if (question.getCategory().equals("Virus") && tempVirusBool == false){
-            return getRandomQuestionFromGlobalWithSettings(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));
+        if (instruction.getCategory().equals(MainActivity.VIRUSSTRING) && tempVirusBool == false){
+            return getRandomQuestionFromGlobalWithSettings(MainActivity.instructionsGlobal.get(randomGenerator.nextInt(MainActivity.instructionsGlobal.size())));
         }
-        if (question.getCategory().equals("Game") && tempGameBool == false){
-            return getRandomQuestionFromGlobalWithSettings(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));
+        if (instruction.getCategory().equals(MainActivity.GAMESTRING) && tempGameBool == false){
+            return getRandomQuestionFromGlobalWithSettings(MainActivity.instructionsGlobal.get(randomGenerator.nextInt(MainActivity.instructionsGlobal.size())));
         }
 
-        return question;
+        return instruction;
     }
 
     //Wie der Name sagt
-    private Question getQuestionFromGlobalWithoutVirus(Question question) {
-        if (question.getCategory().equals("Virus")){
-            return getQuestionFromGlobalWithoutVirus(MainActivity.questionsGlobal.get(randomGenerator.nextInt(MainActivity.questionsGlobal.size())));
+    private Instruction getQuestionFromGlobalWithoutVirus(Instruction instruction) {
+        if (instruction.getCategory().equals(MainActivity.VIRUSSTRING)){
+            return getQuestionFromGlobalWithoutVirus(MainActivity.instructionsGlobal.get(randomGenerator.nextInt(MainActivity.instructionsGlobal.size())));
         }
 
-        return question;
+        return instruction;
     }
 
     //Get special number where there is a specific categoty
     private int getRandomNumberWhereCategory(String category){
-        int output = randomGenerator.nextInt(MainActivity.questionsGlobal.size());
-        if (MainActivity.questionsGlobal.get(output).getCategory().equals(category)){
+        int output = randomGenerator.nextInt(MainActivity.instructionsGlobal.size());
+        if (MainActivity.instructionsGlobal.get(output).getCategory().equals(category)){
             return output;
         }else {
             return getRandomNumberWhereCategory(category);
@@ -167,16 +230,22 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
             tvQuestions.setText(virusEndText[which]);
             linearLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorBackgroundVirusEnd));
             currentRound -= 1;
+            for (int i = 0; i < virusEndCounter.length; i++){
+                if (virusEndCounter[i] > 0) {
+                    virusEndCounter[i] += 1;
+                }
+            }
         }else {
-            if (questionsPool[arrayInd].getCategory().equals("Virus")) {
+            if (questionsPool[arrayInd].getCategory().equals(MainActivity.VIRUSSTRING)) {
                 virusEndText[virusCounter] = questionsPool[arrayInd].getText2();
+                virusStartText[virusCounter] = questionsPool[arrayInd].getText();
                 virusEndCounter[virusCounter] = Math.round(rounds/5) + randomGenerator.nextInt(Math.round(rounds/8));
             }
 
-            Question tempQues = questionsPool[arrayInd];
+            Instruction tempQues = questionsPool[arrayInd];
             tvQuestions.setText(transformQuestion(tempQues));
 
-            if (questionsPool[arrayInd].getCategory().equals("Virus")) {
+            if (questionsPool[arrayInd].getCategory().equals(MainActivity.VIRUSSTRING)) {
                 virusCounter++;
             }
         }
@@ -184,13 +253,13 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     //Set Color
     private void setColor(int arrayInd) {
         switch (questionsPool[arrayInd].getCategory()){
-            case "Game":
+            case MainActivity.GAMESTRING:
                 linearLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorBackgroundGame));
                 break;
-            case "Order":
+            case MainActivity.NORMALSTRING:
                 linearLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorBackgroundAll));
                 break;
-            case "Virus":
+            case MainActivity.VIRUSSTRING:
                 linearLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorBackgroundVirus));
                 break;
             default:
@@ -199,8 +268,8 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //Transform text if there is replaceToken in it
-    private String transformQuestion(Question question){
-        if (question.getText().contains("%p") || question.getText().contains("%2p") || question.getText().contains("%amount")){
+    private String transformQuestion(Instruction instruction){
+        if (instruction.getText().contains("%p") || instruction.getText().contains("%2p") || instruction.getText().contains("%amount")){
             //Get names
             String firstName = getRandomPlayer();
             String secondName = getRandomPlayer(firstName);
@@ -213,13 +282,14 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
                 amount = minDrink;
             }
 
-            if (question.getCategory().equals("Virus")) {
+            if (instruction.getCategory().equals(MainActivity.VIRUSSTRING)) {
                 virusEndText[virusCounter] = virusEndText[virusCounter].replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
+                virusStartText[virusCounter] = virusEndText[virusCounter].replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
             }
 
-            return question.getText().replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
+            return instruction.getText().replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
         }else{
-            return question.getText();
+            return instruction.getText();
         }
     }
 
@@ -241,6 +311,18 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         tvRounds.setText("" + currentRound + "/" + rounds);
     }
 
+    private String transformVirusArray() {
+        String virus = getString(R.string.virusShowHeader);
+
+        for (int i = 0; i < virusEndText.length; i++){
+            if (virusEndCounter[i] > 0){
+                virus += virusStartText[i]+"|"+virusEndCounter[i]+":";
+            }
+        }
+
+        return virus;
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -251,6 +333,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
                 break;
         }
     }
+
 
     @Override
     public void onBackPressed() {

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="10">
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:textColor="@color/colorText"
+            android:id="@+id/showVirusText_tv"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:textSize="24dp"
+            android:text="PLACEHOLDER"
+            android:background="#76bca3"
+            android:layout_weight="8"/>
+
+    <TextView
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:textColor="@color/colorText"
+        android:id="@+id/showVirusLength_tv"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:textSize="24dp"
+        android:text="X"
+        android:background="#76bca3"
+        android:layout_weight="2"/>
+    </LinearLayout>
+</FrameLayout>

@@ -1,5 +1,6 @@
 package at.technikum_wien.cheers;
 
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
@@ -15,20 +16,25 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,9 +52,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonPlay, buttonSettings, buttonMore;
     private TextView tvLastUpdate;
     String test = "";
-    static List<Question> questionsGlobal = new ArrayList<Question>();
+    static List<Instruction> instructionsGlobal = new ArrayList<>();
 
     public static DatabaseReference database;
+
+    public static final String VIRUSSTRING = "virus";
+    public static final String GAMESTRING = "spiel";
+    public static final String NORMALSTRING = "normal";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(!(getIntent().hasExtra("intentFromEndScreen"))){
             WarningDialogFragment warningDialog= new WarningDialogFragment();
             warningDialog.show(getFragmentManager(), "warning");
-        }
-        */
+        }*/
+
         setContentView(R.layout.activity_main);
 
         //GetSetButtons
@@ -89,27 +99,95 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Firebase
         database = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref = database.child("Orders");
+        DatabaseReference ref = database.child("anweisungen");
 
-        ref.addValueEventListener(new ValueEventListener() {
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+
+        // load tasks from preference
+        if(!isNetworkAvailable()) {
+            SharedPreferences prefs = getSharedPreferences("SaveListSharedPrefs", Context.MODE_PRIVATE);
+
+            try {
+                instructionsGlobal = (ArrayList<Instruction>) ObjectSerializer.deserialize(prefs.getString("Instructions", ObjectSerializer.serialize(new ArrayList<Instruction>())));
+            } catch (IOException e) {
+                //e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                //e.printStackTrace();
+            } catch (ClassCastException e){
+                //e.printStackTrace();
+            }
+        }
+
+
+
+        ref.addChildEventListener(new ChildEventListener() {
+
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                int questionCount = (int) snapshot.getChildrenCount();
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String kategorie = "";
+                String text = "";
+                String typ = "";
 
-                for (int i = 0; i < questionCount; i++) {
-                    if (snapshot.child(Integer.toString(i)).child("Category").getValue().toString().equals("Virus")){
-                        questionsGlobal.add(new Question(snapshot.child(Integer.toString(i)).child("Text").getValue().toString(),
-                                snapshot.child(Integer.toString(i)).child("TextEnd").getValue().toString(),
-                                snapshot.child(Integer.toString(i)).child("Category").getValue().toString()));
-                    }else {
-                        questionsGlobal.add(new Question(snapshot.child(Integer.toString(i)).child("Text").getValue().toString(),
-                                snapshot.child(Integer.toString(i)).child("Category").getValue().toString()));
+                String id = dataSnapshot.getKey();
+                kategorie = dataSnapshot.child("kategorie").getValue().toString();
+                text = dataSnapshot.child("text").getValue().toString();
+                typ = dataSnapshot.child("typ").getValue().toString();
+
+
+                Instruction newInst = new Instruction(text, kategorie, typ, id);
+                instructionsGlobal.add(newInst);
+
+                //tvLastUpdate.setText("Last update: " + new SimpleDateFormat("dd.MM.yy", Locale.getDefault()).format(new Date()));
+
+
+
+                // save the task list to shared preferences
+                SharedPreferences prefs = getSharedPreferences("SaveListSharedPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                try {
+                    editor.putString("Instructions", ObjectSerializer.serialize((Serializable) instructionsGlobal));
+                } catch (IOException e) {
+                    //e.printStackTrace();
+                }
+                editor.commit();
+
+            }
+
+
+
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                for(Instruction item:instructionsGlobal){
+                    if(item.getId()==dataSnapshot.getKey()){
+                        item.setCategory(dataSnapshot.child("kategorie").getValue().toString());
+                        item.setText(dataSnapshot.child("text").getValue().toString());
+                        item.setType(dataSnapshot.child("typ").getValue().toString());
+                        break;
                     }
                 }
-                tvLastUpdate.setText("Last update: " + new SimpleDateFormat("dd.MM.yy", Locale.getDefault()).format(new Date()));
+
             }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                for(Instruction item:instructionsGlobal){
+                    if(item.getId()==dataSnapshot.getKey()){
+                        instructionsGlobal.remove(item);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                //not implemented
+            }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                //not implemented
             }
         });
 
@@ -161,5 +239,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //alarmManager.setRepeating(alarmManager.RTC_WAKEUP, System.currentTimeInMillis(), alarmManager.INTERVAL_DAY*7, pendingIntent);
-
+  
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 }
