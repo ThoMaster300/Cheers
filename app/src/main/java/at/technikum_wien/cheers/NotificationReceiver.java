@@ -97,6 +97,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     }
 
+    /*
     public static boolean isAppRunning(final Context context, final String packageName) {
         final ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         final List<ActivityManager.RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
@@ -109,5 +110,5 @@ public class NotificationReceiver extends BroadcastReceiver {
             }
         }
         return false;
-    }
+    }*/
 }
