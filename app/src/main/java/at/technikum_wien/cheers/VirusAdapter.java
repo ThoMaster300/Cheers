@@ -2,6 +2,7 @@ package at.technikum_wien.cheers;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ public class VirusAdapter extends RecyclerView.Adapter<VirusAdapter.ViewHolder>{
             tempText1 = data.get(position).substring(0,index);
             tempText2 = data.get(position).substring(index+1,data.get(position).length());
         }
-        holder.tvShowText.setText(tempText1);
+        holder.tvShowText.setText(Html.fromHtml(tempText1));
         holder.tvShowLength.setText(tempText2);
         if (position == 0){
             holder.tvShowText.setBackgroundColor(Color.parseColor("#65a08b"));

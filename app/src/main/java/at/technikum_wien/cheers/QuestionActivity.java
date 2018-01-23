@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
+import android.text.Html;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -228,7 +229,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         }
 
         if (oneVirusIsOnEnd){
-            tvQuestions.setText(virusEndText[which]);
+            tvQuestions.setText(Html.fromHtml(virusEndText[which]));
             linearLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorBackgroundVirusEnd));
             currentRound -= 1;
             for (int i = 0; i < virusEndCounter.length; i++){
@@ -244,7 +245,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
             }
 
             Instruction tempQues = questionsPool[arrayInd];
-            tvQuestions.setText(transformQuestion(tempQues));
+            tvQuestions.setText(Html.fromHtml(transformQuestion(tempQues)));
 
             if (questionsPool[arrayInd].getCategory().equals(MainActivity.VIRUSSTRING)) {
                 virusCounter++;
@@ -283,12 +284,14 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
                 amount = minDrink;
             }
 
+            String color = "#555555";
+
             if (instruction.getCategory().equals(MainActivity.VIRUSSTRING)) {
-                virusEndText[virusCounter] = virusEndText[virusCounter].replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
-                virusStartText[virusCounter] = virusStartText[virusCounter].replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
+                virusEndText[virusCounter] = virusEndText[virusCounter].replace("%p", "<font color=\""+color+"\"><b>"+firstName+"</b></font>").replace("%2p", "<font color=\""+color+"\"><b>"+secondName+"</b></font>").replace("%amount", "<font color=\""+color+"\"><b>"+amount+"</b></font>");
+                virusStartText[virusCounter] = virusStartText[virusCounter].replace("%p", "<font color=\""+color+"\"><b>"+firstName+"</b></font>").replace("%2p", "<font color=\""+color+"\"><b>"+secondName+"</b></font>").replace("%amount", "<font color=\""+color+"\"><b>"+amount+"</b></font>");
             }
 
-            return instruction.getText().replace("%p", firstName).replace("%2p", secondName).replace("%amount", ""+amount);
+            return instruction.getText().replace("%p", "<font color=\"" + color + "\"><b>"+firstName+"</b></font>").replace("%2p", "<font color=\"" + color + "\"><b>"+secondName+"</b></font>").replace("%amount", "<font color=\"" + color + "\"><b>"+amount+"</b></font>");
         }else{
             return instruction.getText();
         }
