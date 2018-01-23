@@ -92,11 +92,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //GetSetTV (hier würde ich immer einfach einen "Timestamp" reinhauen, wann die neueste DB gedownloaded wurde)
         tvLastUpdate = (TextView) findViewById(R.id.lastUpdate_tv);
 
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         //Firebase
         database = FirebaseDatabase.getInstance().getReference();
         DatabaseReference ref = database.child("anweisungen");
 
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        // load tasks from preference
+        if(!isNetworkAvailable()) {
+            SharedPreferences prefs = getSharedPreferences("SaveListSharedPrefs", Context.MODE_PRIVATE);
+
+            try {
+                instructionsGlobal = (ArrayList<Instruction>) ObjectSerializer.deserialize(prefs.getString("Instructions", ObjectSerializer.serialize(new ArrayList<Instruction>())));
+            } catch (IOException e) {
+                //e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                //e.printStackTrace();
+            } catch (ClassCastException e) {
+                //e.printStackTrace();
+            }
+        }
 
         if(instructionsGlobal.isEmpty()&&!isNetworkAvailable()){
             if(!(getIntent().hasExtra("intentFromEndScreen"))){
@@ -109,21 +124,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 warningDialog.show(getFragmentManager(), "warning");
             }
         }
-
-        // load tasks from preference
-
-            SharedPreferences prefs = getSharedPreferences("SaveListSharedPrefs", Context.MODE_PRIVATE);
-
-            try {
-                instructionsGlobal = (ArrayList<Instruction>) ObjectSerializer.deserialize(prefs.getString("Instructions", ObjectSerializer.serialize(new ArrayList<Instruction>())));
-            } catch (IOException e) {
-                //e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                //e.printStackTrace();
-            } catch (ClassCastException e){
-                //e.printStackTrace();
-            }
-
 
         ref.addChildEventListener(new ChildEventListener() {
 
