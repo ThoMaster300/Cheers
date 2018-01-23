@@ -282,7 +282,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
             //get schlucke
             int amount = 0;
             if (minDrink != maxDrink) {
-                amount = minDrink + randomGenerator.nextInt(maxDrink - minDrink);
+                amount = minDrink + randomGenerator.nextInt(maxDrink - minDrink + 1);
             }else{
                 amount = minDrink;
             }

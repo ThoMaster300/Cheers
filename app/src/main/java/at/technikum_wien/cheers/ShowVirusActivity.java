@@ -7,12 +7,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class ShowVirusActivity extends AppCompatActivity implements View.OnClickListener{
     RecyclerView recyclerView;
     String[] virusPool;
     VirusAdapter virusAdapter;
-    LinearLayout linearLayout;
+    RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +21,8 @@ public class ShowVirusActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_show_virus);
 
         //Unser Layout finden und set on click listener machen
-        linearLayout = (LinearLayout)findViewById(R.id.virus_show_layout);
-        linearLayout.setOnClickListener(this);
+        relativeLayout = (RelativeLayout)findViewById(R.id.virus_show_layout);
+        relativeLayout.setOnClickListener(this);
 
         Intent intent = getIntent();
         String virusStrings = intent.getStringExtra(QuestionActivity.VIRUS_TAG);
