@@ -16,10 +16,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -84,16 +87,16 @@ public class SubmissionActivtiy extends AppCompatActivity implements OnItemSelec
     }
 
     private void sendQuestion() {
-        /*TODO: Geht leider irendwie nicht. Hier fehlt noch das Senden der Frage in die Drafttabelle.*/
         DatabaseReference ref = MainActivity.database.child("drafts");
 
         Map<String, String> inputData = new HashMap<String, String>();
 
         String android_id = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault()).format(new Date());
 
         inputData.put("kategorie", spinner.getSelectedItem().toString());
         inputData.put("text", editText.getText().toString());
-        inputData.put("timestamp",(new SimpleDateFormat("YYYY.MM.DD HH:MM:SS", Locale.getDefault()).format(new Date())).toString());
+        inputData.put("timestamp", dateTime);
         inputData.put("typ", "normal");
         inputData.put("user", android_id);
 

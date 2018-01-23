@@ -78,9 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         #
         #
         #####################################################################*/
-
-
-
+        
         setContentView(R.layout.activity_main);
 
         //GetSetButtons
@@ -113,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         // load tasks from preference
-        if(!isNetworkAvailable()) {
+
             SharedPreferences prefs = getSharedPreferences("SaveListSharedPrefs", Context.MODE_PRIVATE);
 
             try {
@@ -125,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } catch (ClassCastException e){
                 //e.printStackTrace();
             }
-        }
+
 
         ref.addChildEventListener(new ChildEventListener() {
 
