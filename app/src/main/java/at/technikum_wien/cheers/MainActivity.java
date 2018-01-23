@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -125,6 +126,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
+        buttonPlay.setEnabled(false);
+
+        if (instructionsGlobal.size() == 0){
+            Toast toast = Toast.makeText(this, getString(R.string.serviceNot), Toast.LENGTH_LONG);
+            toast.show();
+        }
+
         ref.addChildEventListener(new ChildEventListener() {
 
             @Override
@@ -153,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //e.printStackTrace();
                 }
                 editor.commit();
-
+                buttonPlay.setEnabled(true);
             }
 
             @Override
@@ -166,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     }
                 }
-
+                buttonPlay.setEnabled(true);
             }
 
             @Override
@@ -177,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     }
                 }
+                buttonPlay.setEnabled(true);
             }
 
             @Override
@@ -193,7 +202,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
-
+        if (instructionsGlobal.size() > 0){
+            buttonPlay.setEnabled(true);
+        }
     }
 
     @Override

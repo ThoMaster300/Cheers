@@ -11,6 +11,7 @@
     <string name="noValueEntered">Bitte füge erst etwas ein.</string>
     <string name="notEnoughPlayerWarning">Du brauchst mindestens 2 Spieler um ein Spiel starten zu können.</string>
     <string name="duplicatePlayersWarning">Bitte verwende keine Namen mehrfach!</string>
+    <string name="serviceNot">Service nicht verfügbar.</string>
 
     <string name="warningDialogMessage">"Genießen Sie Alkohol verantwortungsvoll. Diese App haftet nicht für Folgeschäden durch Betrinken."</string>
     <string name="warningDialogTitle">Warnhinweis</string>
