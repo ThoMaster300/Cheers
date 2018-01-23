@@ -56,7 +56,6 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
         //Shared Preferences für die Textgröße und die mindestschluck sowie die maximal schlucke
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String questionSize = sharedPreferences.getString("text_size_question","32");
         minDrink = Integer.parseInt(sharedPreferences.getString("min_drinkAmount", "1"));
         maxDrink = Integer.parseInt(sharedPreferences.getString("max_drinkAmount", "4"));
         backCounter = 0;
@@ -93,8 +92,12 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         layout.setOnClickListener(this);
 
         try {
-            tvQuestions.setTextSize(Integer.valueOf(questionSize));
-        }catch(Exception ex){
+            int questionSize = Integer.parseInt(sharedPreferences.getString("text_size_question","32"));
+            if(questionSize > 50){
+                questionSize = 50; //wenn die spieler mehr als 50 angeben ist nicht genug platz
+            }
+            tvQuestions.setTextSize(questionSize);
+        }catch(NumberFormatException ex){
             //wenn keine Zahlen sondern zB Buchstaben eingegeben werden, wird default wert genommen
         }
     }
